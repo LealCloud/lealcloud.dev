@@ -1,38 +1,68 @@
-import type { Metadata } from "next";
-import { Lato, Lexend } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Lato, Lexend } from 'next/font/google';
+import { baseMetadata } from '@/config/seo';
+import './globals.css';
 
-// 1. Configuración de Lato (Títulos)
+/**
+ * @fileoverview Componente de Layout Raíz (RootLayout) del proyecto.
+ * Define la estructura HTML base, la estrategia de carga de fuentes optimizadas,
+ * la inyección de metadatos globales de SEO y la inicialización del tema visual.
+ * * @module App/RootLayout
+ */
+
+/**
+ * Configuración de la fuente Lato para titulares y elementos destacados.
+ * Expone la variable CSS `--font-lato` cargando los pesos regular, bold y black.
+ */
 const lato = Lato({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  variable: "--font-lato",
-  display: "swap",
+  subsets: ['latin'],
+  weight: ['400', '700', '900'],
+  variable: '--font-lato',
+  display: 'swap',
 });
 
-// 2. Configuración de Lexend (Cuerpo de texto por defecto)
+/**
+ * Configuración de la fuente Lexend para el cuerpo de texto principal de la aplicación.
+ * Expone la variable CSS `--font-lexend` con optimización de rendimiento en renderizado.
+ */
 const lexend = Lexend({
-  subsets: ["latin"],
-  variable: "--font-lexend",
-  display: "swap",
+  subsets: ['latin'],
+  variable: '--font-lexend',
+  display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: "Marlon Leal | Portfolio",
-  description: "Software Developer Portfolio & Blog",
-};
+/**
+ * Metadatos globales de la aplicación (SEO, Robots, OpenGraph).
+ * Next.js requiere estrictamente que esta constante sea exportada con el nombre `metadata`.
+ * * @see {@link https://nextjs.org/docs/app/api-reference/functions/generate-metadata Next.js Metadata API}
+ */
+export const metadata: Metadata = baseMetadata;
 
+/**
+ * Componente Layout principal que envuelve a todas las páginas de la aplicación.
+ * * @param {Object} props - Propiedades del componente.
+ * @param {React.ReactNode} props.children - Componentes o páginas hijas a renderizar dentro del flujo principal.
+ * * @returns {JSX.Element} Estructura HTML raíz (`<html>` y `<body>`) con clases globales aplicadas.
+ * * @remarks
+ * **Efectos Secundarios y Configuración de Plantilla:**
+ * 1. **Inyección de Fuentes:** Agrega `--font-lato` y `--font-lexend` al árbol DOM mediante clases CSS variables.
+ * Cualquier modificación o adición de fuentes requiere su correspondiente mapeo en `globals.css`.
+ * 2. **Estado Temporal de Tema:** El atributo `data-theme="dark"` se encuentra hardcodeado de forma intencional
+ * como estrategia de desarrollo mientras se implementa el Context/Provider definitivo de persistencia (Theme Provider).
+ * Si usas esta plantilla, aquí es donde conectarás tu lógica de Light/Dark mode.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${lato.variable} ${lexend.variable} h-full`}>
-      {/* Mantenemos font-sans aquí; abajo la enlazaremos a Lexend en Tailwind */}
-      <body className="min-h-full flex flex-col font-sans antialiased text-[var(--text)] bg-[var(--background)]">
-        {children}
-      </body>
+    <html
+      lang="es"
+      className={`${lato.variable} ${lexend.variable}`}
+      data-theme="dark"
+    >
+      <body className="flex min-h-screen flex-col antialiased">{children}</body>
     </html>
   );
 }
