@@ -1,5 +1,10 @@
 // src/components/ui/icon-map.ts
-import { RiSunFoggyFill, RiMoonClearFill } from 'react-icons/ri';
+import {
+  RiSunFoggyFill,
+  RiMoonClearFill,
+  RiMenuLine,
+  RiCloseLine,
+} from 'react-icons/ri';
 
 /**
  * @fileoverview Mapa de registro y desacoplamiento para iconos globales de la interfaz.
@@ -15,6 +20,8 @@ import { RiSunFoggyFill, RiMoonClearFill } from 'react-icons/ri';
 export const IconMap = {
   light: RiSunFoggyFill,
   dark: RiMoonClearFill,
+  menu: RiMenuLine,
+  close: RiCloseLine,
 };
 
 /**
