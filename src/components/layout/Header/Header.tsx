@@ -6,7 +6,7 @@ import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { NAV_LINKS, isNavLinkActive, type NavLink } from '@/config/nav.config';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { cn } from '@/utilities/cn';
-import { IconMap, type IconName } from '@/lib/iconMap';
+import { IconMap } from '@/lib/iconMap';
 import './lamp.css';
 
 // TODO solucionar error de animación en Navbar -v móvil.
@@ -154,8 +154,8 @@ const MenuButton = memo(function MenuButton({
   onClick: () => void;
 }) {
   // Tipado estricto en la declaración. Cero aserciones manuales.
-  const iconMenu: IconName = isOpen ? 'close' : 'menu';
-  const Icon = IconMap[iconMenu];
+  const iconMenu = isOpen ? 'close' : 'menu';
+  const Icon = IconMap.ui[iconMenu];
 
   return (
     <button

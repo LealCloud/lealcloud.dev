@@ -37,7 +37,7 @@ export default function ThemeToggle({
 
   const currentTheme = theme || 'dark';
   const isDark = currentTheme === 'dark';
-  const Icon = IconMap[currentTheme];
+  const Icon = IconMap.ui[currentTheme];
 
   // ─── Proporciones Matemáticas del Sistema de Diseño (Base: Escala Original de 36px) ───
   const ratio = size / 36;
