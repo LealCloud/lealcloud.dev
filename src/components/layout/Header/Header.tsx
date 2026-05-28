@@ -6,6 +6,7 @@ import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { NAV_LINKS, isNavLinkActive, type NavLink } from '@/config/nav.config';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { cn } from '@/utilities/cn';
+import { IconMap, type IconName } from '@/lib/iconMap';
 import './lamp.css';
 
 // TODO solucionar error de animación en Navbar -v móvil.
@@ -145,8 +146,6 @@ const NavItem = memo(function NavItem({
 /**
  * Subcomponente atómico para el botón de hamburguesa animado con css semántico.
  */
-
-// TODO agregar iconos a IconMap y refactorizar.
 const MenuButton = memo(function MenuButton({
   isOpen,
   onClick,
@@ -154,38 +153,26 @@ const MenuButton = memo(function MenuButton({
   isOpen: boolean;
   onClick: () => void;
 }) {
+  // Tipado estricto en la declaración. Cero aserciones manuales.
+  const iconMenu: IconName = isOpen ? 'close' : 'menu';
+  const Icon = IconMap[iconMenu];
+
   return (
     <button
       onClick={onClick}
       aria-expanded={isOpen}
+      aria-controls="mobile-nav-panel"
       aria-label={
         isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'
       }
-      className="hover:bg-foreground/10 flex h-8 w-8 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50"
+      className="flex h-8 w-8 items-center justify-center"
     >
-      <div className="relative flex h-3.5 w-4 flex-col justify-between">
-        <span
-          className={cn(
-            'bg-foreground h-0.5 w-full origin-left rounded-full transition-all duration-300',
-            isOpen && 'tranlate-x-[2px] -translate-y-[1px] rotate-45',
-          )}
-        />
-        <span
-          className={cn(
-            'bg-foreground h-0.5 w-full rounded-full transition-all duration-200',
-            isOpen && 'scale-0 opacity-0',
-          )}
-        />
-        <span
-          className={cn(
-            'bg-foreground h-0.5 w-full origin-left rounded-full transition-all duration-300',
-            isOpen && 'translate-x-[2px] translate-y-[1px] -rotate-45',
-          )}
-        />
-      </div>
+      {/* Renderizado defensivo por si acaso el mapa cambia en el futuro */}
+      {Icon && <Icon className="h-5 w-5" />}
     </button>
   );
 });
+MenuButton.displayName = 'MenuButton';
 
 /**
  * Componente Header estructural. Controla la barra de navegación tipo píldora flotante.
@@ -289,7 +276,7 @@ export default function Header() {
             <ThemeToggle size={18} />
 
             {/*Gatillo del Munú Móvil (Oculto en desktop) */}
-            <div className="flex items-center md:hidden">
+            <div className="ml-3 flex items-center md:hidden">
               <MenuButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
             </div>
           </div>
