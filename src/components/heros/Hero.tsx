@@ -10,18 +10,8 @@ import { IconMap } from '@/lib/iconMap';
  * @module Components/Sections/Hero
  */
 
-// 1. Tipado limpio para el Badge
-type BadgeText = string | undefined;
-
-/**
- * @constant CONTENT
- * @description Almacén estático de cadenas de texto de la sección.
- * * DESIGN DECISION: Separar el contenido textual de las etiquetas HTML del componente
- * facilita migraciones futuras hacia un sistema de internacionalización (i18n), archivos JSON
- * externos o un CMS headless (Content Management System).
- */
 const CONTENT = {
-  badge: 'Disponible para trabajar' as BadgeText,
+  badge: 'Disponible para trabajar' as string | undefined,
   name: 'Steven Leal T.',
   description:
     'Analista y desarrollador de software colombiano 🇨🇴. Especializado en desarrollo web de alto rendimiento: arquitecturas escalables, código limpio y entregas orientadas a negocio.',
@@ -57,19 +47,7 @@ const SOCIAL = [
  */
 const PROFILE_PHOTO = {
   src: '/profilePhoto.webp',
-  alt: `Foto de perfil de ${CONTENT.name}`,
-};
-
-interface BadgeProps {
-  children: React.ReactNode;
-}
-
-/**
- * @component BadgeTarget
- * @description Componente atómico contenedor para el tag de estado/disponibilidad.
- */
-const BadgeTarget = ({ children }: BadgeProps) => {
-  return <span>{children}</span>;
+  alt: `${CONTENT.name} — Analista y Desarrollador de Software colombiano.`,
 };
 
 interface ButtonSocialProps {
@@ -95,6 +73,7 @@ const ButtonSocial = ({ url, label, iconName }: ButtonSocialProps) => {
       href={url}
       target={isExternal ? '_blank' : '_self'}
       {...(isExternal && { rel: 'noopener noreferrer' })}
+      aria-label={`Perfil de ${label} de ${CONTENT.name}`}
     >
       {Icon && <Icon />}
       <span className="capitalize">{label}</span>
@@ -109,33 +88,47 @@ const ButtonSocial = ({ url, label, iconName }: ButtonSocialProps) => {
  */
 export default function Hero() {
   return (
-    <section>
-      <div>
-        {/* Renderizado condicional por si el badge viene undefined */}
-        {CONTENT.badge && <BadgeTarget>{CONTENT.badge}</BadgeTarget>}
-
-        <h1>Hola! soy {CONTENT.name}</h1>
-        <p>{CONTENT.description}</p>
-
-        <div>
-          {SOCIAL.map((network) => (
-            <ButtonSocial
-              key={network.name}
-              url={network.url}
-              label={network.name}
-              iconName={network.icon}
-            />
-          ))}
-        </div>
+    <section aria-label="Presentación" className="">
+      {/* IMAGEN */}
+      <div className="">
+        <Image
+          src={PROFILE_PHOTO.src}
+          alt={PROFILE_PHOTO.alt}
+          width={360}
+          height={360}
+          priority
+          className="h-full w-full object-cover"
+        />
       </div>
 
-      <Image
-        src={PROFILE_PHOTO.src}
-        alt={PROFILE_PHOTO.alt}
-        width={200}
-        height={200}
-        priority
-      />
+      {/* TEXTO */}
+      <div className="">
+        {CONTENT.badge && (
+          <span aria-label="Estado de disponibilidad" className="">
+            {CONTENT.badge}
+          </span>
+        )}
+
+        <h1 className="">
+          Hola! soy <span className="">{CONTENT.name}</span>
+        </h1>
+
+        <p className="">{CONTENT.description}</p>
+
+        {/* grupo de enlaces de navegación social */}
+        <nav aria-label="Redes sociales y contacto">
+          <div className="">
+            {SOCIAL.map((network) => (
+              <ButtonSocial
+                key={network.name}
+                url={network.url}
+                label={network.name}
+                iconName={network.icon}
+              />
+            ))}
+          </div>
+        </nav>
+      </div>
     </section>
   );
 }
