@@ -20,13 +20,13 @@
   /* ── Exposición de Variables Semánticas al Motor de Clases ── */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
 
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
 
   /* Tokens de acento e interacción integrados para el sistema de diseño */
   --color-accent: var(--accent);
-
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -36,6 +36,7 @@
   /* ── Fondos y Contenedores ── */
   --background: oklch(0.9394 0.0309 289.79);
   --foreground: oklch(0.2462 0.0398 249.73);
+  --muted-foreground: oklch(0.4 0.0398 249.73);
 
   /* ── Identidad de Marca y Acentos ── */
   --primary: oklch(0.4585 0.2562 272.59);
@@ -45,18 +46,19 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   TEMA OSCURO (Dark Mode) — Mapeo de Contraste Invertido
+   TEMA OSCURO (Dark Mode)
 ══════════════════════════════════════════════════════════════════════════════ */
 [data-theme='dark'] {
-  /* ── Fondos ─────────────────────────────────────────── */
-  --background: oklch(0.2462 0.0398 249.73); /* HEX aprox: #112233 */
-  --foreground: oklch(0.9394 0.0309 289.79); /* HEX aprox: #eae8ff */
+  /* ── Fondos y Contenedores ── */
+  --background: oklch(0.2462 0.0398 249.73);
+  --foreground: oklch(0.9394 0.0309 289.79);
+  --muted-foreground: oklch(0.7 0.0309 249.73);
 
   /* ── Identidad de Marca y Acentos ── */
-  --primary: oklch(0.5413 0.2466 293.01); /* HEX aprox: #7c3aed */
-  --secondary: oklch(0.6268 0.2325 303.9); /* HEX aprox: #a855f7 */
+  --primary: oklch(0.5413 0.2466 293.01);
+  --secondary: oklch(0.6268 0.2325 303.9);
 
-  --accent: oklch(0.8188 0.1633 76.23); /* HEX aprox: #ffb326 */
+  --accent: oklch(0.8188 0.1633 76.23);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -79,8 +81,10 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  font-weight: unset;
-  font-size: unset;
+}
+
+strong {
+  color: var(--color-accent);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
