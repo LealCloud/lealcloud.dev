@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
-import { NAV_LINKS, isNavLinkActive, type NavLink } from '@/config/nav.config';
+import { HEADER_LINKS, isNavLinkActive, type NavLink } from '@/config/navigation';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { cn } from '@/utilities/cn';
 import { IconMap } from '@/lib/iconMap';
@@ -203,7 +203,10 @@ export default function Header() {
   const activeByHref = useMemo(
     () =>
       Object.fromEntries(
-        NAV_LINKS.map((link) => [link.href, isNavLinkActive(pathname, link)]),
+        HEADER_LINKS.map((link) => [
+          link.href,
+          isNavLinkActive(pathname, link),
+        ]),
       ) as Record<string, boolean>,
     [pathname],
   );
@@ -256,7 +259,7 @@ export default function Header() {
               className="flex items-center justify-center gap-0.5"
               role="list"
             >
-              {NAV_LINKS.map((link) => (
+              {HEADER_LINKS.map((link) => (
                 <NavItem
                   key={link.href}
                   link={link}
@@ -293,7 +296,7 @@ export default function Header() {
         >
           <nav aria-label="Navegación principal móvil" className="min-h-0">
             <ul className="">
-              {NAV_LINKS.map((link) => (
+              {HEADER_LINKS.map((link) => (
                 <NavItem
                   key={link.href}
                   link={link}
