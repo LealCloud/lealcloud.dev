@@ -5,6 +5,7 @@ import './globals.css';
 
 import { Providers } from '@/providers';
 import Header from '@/components/layout/Header/Header';
+import Footer from '@/components/layout/Footer';
 
 /**
  * @fileoverview Componente de Layout Raíz (RootLayout) del proyecto.
@@ -65,6 +66,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>

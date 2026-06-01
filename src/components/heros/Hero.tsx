@@ -165,6 +165,11 @@ export default function Hero() {
         {/* Barra de Navegación Social */}
         <nav aria-label="Redes sociales y contacto" className="w-full">
           <ul className="m-0 flex list-none flex-wrap justify-center gap-3 p-0 lg:justify-start">
+            {/* TODO: Migrar la lógica de enrutamiento a un componente aislado y reutilizable.
+                Motivo: Seguir las buenas prácticas oficiales de Next.js. Se debe renderizar un elemento 
+                `<a>` nativo para URLs externas y el componente `<Link>` de framework exclusivamente para 
+                navegación interna, evitando sobrecargar el enrutador del cliente con prefeching innecesario.
+            */}
             {SOCIAL.map((network) => (
               <li key={network.name}>
                 <ButtonSocial
