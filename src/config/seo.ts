@@ -21,7 +21,7 @@ import type { Metadata } from 'next';
 
 export const baseMetadata: Metadata = {
   title: {
-    default: 'lealcloud.dev | Marlon Steven Leal Talero',
+    default: 'Steven Leal | Developer',
     template: '%s | lealcloud.dev',
   },
   description:
@@ -34,6 +34,14 @@ export const baseMetadata: Metadata = {
   authors: [
     { name: 'Marlon Steven Leal Talero', url: 'https://lealcloud.dev' },
   ],
+
+  /** Configuración de favicons e iconos de la aplicación */
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+  },
+
   keywords: [
     'Marlon Steven Leal Talero',
     'Marlon Leal',
