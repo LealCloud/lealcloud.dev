@@ -40,6 +40,8 @@ export const NAVIGATION_MAP = [
 
 export const HEADER_LINKS = NAVIGATION_MAP.filter((link) => !link.hideInHeader);
 
+export type MapHref = (typeof NAVIGATION_MAP)[number]['href'];
+
 /**
  * Determina si una ruta de navegación está activa basándose en el pathname actual.
  * Maneja coincidencia exacta, parcial por sub-rutas y descarta enlaces externos o hashes.
