@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { CustomLink } from '../Link';
 import { IconMap } from '@/lib/iconMap';
 
 /**
@@ -39,7 +39,7 @@ const FOOTER_CONTENT: FooterContent = {
       name: 'email',
       icon: 'email',
       url: '/contact',
-      label: 'Enviar correo electrónico',
+      label: 'Visitar la página de contacto',
     },
     {
       name: 'github',
@@ -57,41 +57,40 @@ const FOOTER_CONTENT: FooterContent = {
 };
 
 /* ─────────────────────────────────────────────────
-   3. COMPONENTE COMPLEMENTARIO PRINCIPAL
+   3. COMPONENTE PRINCIPAL
 ───────────────────────────────────────────────── */
+
 export default function Footer() {
   const { copyright, author, socials } = FOOTER_CONTENT;
 
   return (
-    <footer className="hidden">
-      <div>
-        {/* Bloque de Identidad y Copyright */}
-        <div>
+    <footer className="border-primary/10 bg-background/80 mt-6 w-full border-t backdrop-blur-sm">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-6 md:flex-row md:justify-between md:py-4">
+        {/* Identidad y Autoría */}
+        <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm md:justify-start md:text-left">
           <span>{copyright}</span>
-          <span> Hecho por {author}</span>
+          <span>Diseñado y Desarrollado por {author}</span>
         </div>
 
-        {/* Navegación Social Accesible */}
-        {/* TODO: Migrar la lógica de enrutamiento a un componente aislado y reutilizable.
-                Motivo: Seguir las buenas prácticas oficiales de Next.js. Se debe renderizar un elemento 
-                `<a>` nativo para URLs externas y el componente `<Link>` de framework exclusivamente para 
-                navegación interna, evitando sobrecargar el enrutador del cliente con prefeching innecesario.
-        */}
+        {/* Barra de Navegación Social */}
         <nav aria-label="Enlaces de contacto del pie de página">
-          <ul className="m-0 flex list-none p-0">
+          <ul className="m-0 flex list-none gap-1 p-0">
             {socials.map((link) => {
               const Icon = IconMap.social[link.icon];
-              const isExternal = link.url.startsWith('http');
+
               return (
                 <li key={link.name}>
-                  <Link
+                  {/* TODO: Reemplazar el renderizado manual de `<CustomLink />` por el componente de UI `<Button />`.
+                Motivo: Estandarizar los tokens de interacción del sistema de diseño (hover, transiciones y rings de enfoque), 
+                configurando el componente para que actúe como un wrapper polimórfico que use internamente `<CustomLink />` si se provee un `href`.
+                */}
+                  <CustomLink
                     href={link.url}
-                    target={isExternal ? '_blank' : '_self'}
-                    {...(isExternal && { rel: 'noopener noreferrer' })}
                     aria-label={link.label}
+                    className="text-muted-foreground hover:bg-primary flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-200 hover:text-white"
                   >
-                    {Icon && <Icon aria-hidden="true" />}
-                  </Link>
+                    {Icon && <Icon aria-hidden="true" className="h-4 w-4" />}
+                  </CustomLink>
                 </li>
               );
             })}
