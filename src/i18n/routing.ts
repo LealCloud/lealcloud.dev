@@ -1,9 +1,14 @@
-import {defineRouting} from 'next-intl/routing';
- 
+import { defineRouting } from 'next-intl/routing';
+import { createNavigation } from 'next-intl/navigation';
+
 export const routing = defineRouting({
-  // A list of all locales that are supported
   locales: ['es', 'en'],
- 
-  // Used when no locale matches
-  defaultLocale: 'es'
+
+  defaultLocale: 'es',
+
+  localePrefix: 'as-needed',
 });
+
+// Esto te servirá para exportar tus hooks de navegación más adelante
+export const { Link, redirect, usePathname, useRouter } =
+  createNavigation(routing);

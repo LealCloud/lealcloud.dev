@@ -1,4 +1,10 @@
 // src/config/seo.ts
+
+/**
+ * TODO: Migrar la constante estática de metadatos a la función dinámica generateMetadata.
+ * Motivo: Permitir la internacionalización (i18n) de las etiquetas SEO (Title, Description, OpenGraph)
+ * consumiendo de forma asíncrona los mensajes correspondientes al segmento `params.locale` actual.
+ */
 import type { Metadata } from 'next';
 
 /**
@@ -37,9 +43,7 @@ export const baseMetadata: Metadata = {
 
   /** Configuración de favicons e iconos de la aplicación */
   icons: {
-    icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },
 
   keywords: [

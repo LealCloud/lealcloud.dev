@@ -1,7 +1,12 @@
+/**
+ * TODO: Implementar generateStaticParams para la compilación estática de rutas por idioma.
+ * Motivo: Optimizar el rendimiento del despliegue (SSG) pre-renderizando en el servidor 
+ * los segmentos válidos de [locale] ('es' y 'en') en tiempo de build, evitando el renderizado por demanda.
+ */
 import type { Metadata } from 'next';
 import { Lato, Lexend } from 'next/font/google';
 import { baseMetadata } from '@/config/seo';
-import './globals.css';
+import '../globals.css';
 
 import { Providers } from '@/providers';
 import Header from '@/components/layout/Header/Header';
@@ -59,7 +64,7 @@ export const metadata: Metadata = baseMetadata;
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>; 
 }
 
 export default async function RootLayout({
