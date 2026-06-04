@@ -6,6 +6,7 @@ import './globals.css';
 import { Providers } from '@/providers';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer';
+import { NextIntlClientProvider } from 'next-intl';
 
 /**
  * @fileoverview Componente de Layout Raíz (RootLayout) del proyecto.
@@ -55,19 +56,28 @@ export const metadata: Metadata = baseMetadata;
  * actúa como el orquestador del estado global, manejando la persistencia y la inyección dinámica del atributo `data-theme`
  * (Light/Dark mode) para mitigar el FOUC en conjunto con las reglas CSS base.
  */
-export default function RootLayout({
-  children,
-}: Readonly<{
+
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+  params: { locale: string };
+}
+
+export default async function RootLayout({
+  children,
+  params,
+}: Readonly<RootLayoutProps>) {
+  const { locale } = await params;
+
   return (
-    <html lang="es" className={`${lato.variable} ${lexend.variable}`}>
+    <html lang={locale} className={`${lato.variable} ${lexend.variable}`}>
       <body>
-        <Providers>
-          <Header />
-          {children}
-          <Footer />
-        </Providers>
+        <NextIntlClientProvider>
+          <Providers>
+            <Header />
+            {children}
+            <Footer />
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
