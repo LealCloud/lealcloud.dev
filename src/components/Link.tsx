@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { type InternalHref } from '@/config/navigation';
+import { Link as LocaleLink } from '@/navigation';
 import { cn } from '@/utilities/cn';
 
 /**
@@ -59,15 +59,15 @@ export const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
     }
 
     return (
-      <Link
+      <LocaleLink
         ref={ref}
-        href={href as any}
+        href={href}
         className={commonClasses}
         {...props}
         aria-label={finalAriaLabel}
       >
         {renderContent}
-      </Link>
+      </LocaleLink>
     );
   },
 );

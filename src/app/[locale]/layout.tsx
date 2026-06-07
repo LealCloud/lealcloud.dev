@@ -48,7 +48,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${lato.variable} ${lexend.variable}`}>
       <body>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
             <Header />
             {children}

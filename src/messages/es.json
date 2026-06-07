@@ -50,6 +50,15 @@
     },
     "themeToggle": {
       "ariaLabel": "Alternar tema"
+    },
+    "languageSwitcher": {
+      "triggerAriaLabel": "Seleccionar idioma, actual: {language}",
+      "listAriaLabel": "Idiomas disponibles",
+      "switchTo": "Cambiar a {language}",
+      "locales": {
+        "es": "Español",
+        "en": "English"
+      }
     }
   },
 

@@ -49,6 +49,15 @@
     },
     "themeToggle": {
       "ariaLabel": "Toggle theme"
+    },
+    "languageSwitcher": {
+      "triggerAriaLabel": "Select language, current: {language}",
+      "listAriaLabel": "Available languages",
+      "switchTo": "Switch to {language}",
+      "locales": {
+        "es": "Español",
+        "en": "English"
+      }
     }
   },
 

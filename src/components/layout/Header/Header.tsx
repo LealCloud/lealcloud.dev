@@ -1,14 +1,18 @@
 'use client';
 
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/navigation';
 import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
-import { HEADER_LINKS, isNavLinkActive, type NavLink } from '@/config/navigation';
+import {
+  HEADER_LINKS,
+  isNavLinkActive,
+  type NavLink,
+} from '@/config/navigation';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { cn } from '@/utilities/cn';
 import { IconMap } from '@/lib/iconMap';
 import './lamp.css';
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 
 // TODO solucionar error de animación en Navbar -v móvil.
 /* TODO: Refactorizar la opacidad arbitraria. Reemplazar la clase utilitaria
@@ -282,8 +286,9 @@ export default function Header() {
           />
 
           {/* Bloque de acción */}
-          <div className="flex shrink-0 items-center">
+          <div className="flex shrink-0 items-center gap-0.5">
             <ThemeToggle size={18} />
+            <LanguageSwitcher />
 
             {/*Gatillo del Munú Móvil (Oculto en desktop) */}
             <div className="ml-3 flex items-center md:hidden">
@@ -297,17 +302,19 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Panel Desplegable Movile (Animación controlada po tailwind Grid) */}
+        {/* Panel Desplegable Movile (Animación controlada por tailwind Grid) */}
         <div
+          id="mobile-nav-panel" // Añadido para hacer match con el aria-controls del MenuButton
           className={cn(
-            'grid overflow-hidden px-5 transition-all duration-300 ease-in-out md:hidden',
+            'grid overflow-hidden px-3 transition-all duration-300 ease-in-out md:hidden',
             isOpen
-              ? 'grid-rows-[1fr] pt-2 pb-4 opacity-100'
+              ? 'grid-rows-[1fr] pt-2 pb-3 opacity-100'
               : 'grid-rows-[0fr] opacity-0',
           )}
         >
           <nav aria-label={t('navMobileAria')} className="min-h-0">
-            <ul className="">
+            {/* CORRECCIÓN: flex-col y gap para separar los links en vertical de forma limpia */}
+            <ul className="flex flex-col gap-1" role="list">
               {HEADER_LINKS.map((link) => (
                 <NavItem
                   key={link.href}

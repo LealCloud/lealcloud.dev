@@ -9,6 +9,7 @@ export const routing = defineRouting({
   localePrefix: 'as-needed',
 });
 
-// Esto te servirá para exportar tus hooks de navegación más adelante
-export const { Link, redirect, usePathname, useRouter } =
+export type AppLocale = (typeof routing.locales)[number];
+
+export const { Link, redirect, usePathname, useRouter, getPathname } =
   createNavigation(routing);
