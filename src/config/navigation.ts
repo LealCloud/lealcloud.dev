@@ -13,8 +13,17 @@ export const INTERNAL_ROUTES = [
 
 export type InternalHref = (typeof INTERNAL_ROUTES)[number];
 
+export type NavigationLabelKey =
+  | 'home'
+  | 'projects'
+  | 'lab'
+  | 'blog'
+  | 'contact'
+  | 'github'
+  | 'linkedin';
+
 interface BaseNavLink {
-  label: string;
+  labelKey: NavigationLabelKey;
   hideInHeader?: boolean;
   /** Determina si la coincidencia de la ruta debe ser exacta */
   exact?: boolean;
@@ -25,15 +34,19 @@ export type NavLink = BaseNavLink & {
 };
 
 export const NAVIGATION_MAP = [
-  { href: '/', label: 'Inicio', exact: true },
-  { href: '/projects', label: 'Proyectos' },
-  { href: '/lab', label: 'Laboratorio' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contacto', hideInHeader: true },
-  { href: 'https://github.com/LealCloud', label: 'GitHub', hideInHeader: true },
+  { href: '/', labelKey: 'home', exact: true },
+  { href: '/projects', labelKey: 'projects' },
+  { href: '/lab', labelKey: 'lab' },
+  { href: '/blog', labelKey: 'blog' },
+  { href: '/contact', labelKey: 'contact', hideInHeader: true },
+  {
+    href: 'https://github.com/LealCloud',
+    labelKey: 'github',
+    hideInHeader: true,
+  },
   {
     href: 'https://linkedin.com/in/lealcloud/',
-    label: 'LinkedIn',
+    labelKey: 'linkedin',
     hideInHeader: true,
   },
 ] satisfies NavLink[];

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { HEADER_LINKS, isNavLinkActive, type NavLink } from '@/config/navigation';
@@ -110,10 +111,12 @@ const NavItem = memo(function NavItem({
   link,
   active,
   onClick,
+  label,
 }: {
   link: NavLink;
   active: boolean;
   onClick?: () => void;
+  label: string;
 }) {
   return (
     <li className="w-full md:w-auto">
@@ -131,7 +134,7 @@ const NavItem = memo(function NavItem({
             : 'text-foreground/80 hover:bg-foreground/10 hover:text-foreground',
         )}
       >
-        {link.label}
+        {label}
         {active && (
           <span
             aria-hidden="true"
@@ -149,9 +152,13 @@ const NavItem = memo(function NavItem({
 const MenuButton = memo(function MenuButton({
   isOpen,
   onClick,
+  openLabel,
+  closeLabel,
 }: {
   isOpen: boolean;
   onClick: () => void;
+  openLabel: string;
+  closeLabel: string;
 }) {
   // Tipado estricto en la declaración. Cero aserciones manuales.
   const iconMenu = isOpen ? 'close' : 'menu';
@@ -162,9 +169,7 @@ const MenuButton = memo(function MenuButton({
       onClick={onClick}
       aria-expanded={isOpen}
       aria-controls="mobile-nav-panel"
-      aria-label={
-        isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'
-      }
+      aria-label={isOpen ? closeLabel : openLabel}
       className="flex h-8 w-8 items-center justify-center"
     >
       {/* Renderizado defensivo por si acaso el mapa cambia en el futuro */}
@@ -179,6 +184,7 @@ MenuButton.displayName = 'MenuButton';
  */
 export default function Header() {
   const pathname = usePathname();
+  const t = useTranslations('layout.header');
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -238,7 +244,7 @@ export default function Header() {
         <div className="flex h-12 items-center justify-between gap-4 px-5">
           <Link
             href="/"
-            aria-label="Ir al inicio"
+            aria-label={t('brandAriaLabel')}
             onClick={() => setIsOpen(false)}
             className="font-heading text-accent shrink-0 text-sm font-black tracking-[0.2em] uppercase transition-colors duration-300" //Todo Validar color hover
           >
@@ -252,7 +258,7 @@ export default function Header() {
 
           {/* Navegación Desktop (Oculto en Mobiles) */}
           <nav
-            aria-label="Navegación principal desktop"
+            aria-label={t('navDesktopAria')}
             className="hidden flex-1 md:block"
           >
             <ul
@@ -264,6 +270,7 @@ export default function Header() {
                   key={link.href}
                   link={link}
                   active={activeByHref[link.href]}
+                  label={t(`navigation.${link.labelKey}`)}
                 />
               ))}
             </ul>
@@ -280,7 +287,12 @@ export default function Header() {
 
             {/*Gatillo del Munú Móvil (Oculto en desktop) */}
             <div className="ml-3 flex items-center md:hidden">
-              <MenuButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+              <MenuButton
+                isOpen={isOpen}
+                onClick={() => setIsOpen(!isOpen)}
+                openLabel={t('menuOpen')}
+                closeLabel={t('menuClose')}
+              />
             </div>
           </div>
         </div>
@@ -294,7 +306,7 @@ export default function Header() {
               : 'grid-rows-[0fr] opacity-0',
           )}
         >
-          <nav aria-label="Navegación principal móvil" className="min-h-0">
+          <nav aria-label={t('navMobileAria')} className="min-h-0">
             <ul className="">
               {HEADER_LINKS.map((link) => (
                 <NavItem
@@ -302,6 +314,7 @@ export default function Header() {
                   link={link}
                   active={activeByHref[link.href]}
                   onClick={() => setIsOpen(false)}
+                  label={t(`navigation.${link.labelKey}`)}
                 />
               ))}
             </ul>

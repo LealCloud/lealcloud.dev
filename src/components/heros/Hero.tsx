@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { IconMap } from '@/lib/iconMap';
 
 /**
@@ -8,31 +9,6 @@ import { IconMap } from '@/lib/iconMap';
  * y navegación social tipada de forma estricta a partir del registro maestro de iconos.
  * @module Components/Sections/Hero
  */
-
-/* ─────────────────────────────────────────────────
-   CONTENIDO ESTÁTICO & ESPECIFICACIONES
-───────────────────────────────────────────────── */
-
-const CONTENT = {
-  badge: 'Disponible para trabajar' as string | undefined,
-  name: 'Steven Leal T.',
-  role: 'Software Engineer & Architect',
-  description: (
-    <>
-      Estudiante de{' '}
-      <strong>analista y desarrollador de software colombiano 🇨🇴</strong>.
-      Especializado en desarrollo web de alto rendimiento: arquitecturas
-      escalables, código limpio y entregas orientadas a negocio.
-    </>
-  ),
-};
-
-const STATS = [
-  { label: '01. STACK', value: 'React / Next.js' },
-  { label: '02. FOCUS', value: 'Cloud Architecture' },
-  { label: '03. STATUS', value: 'Open for Collab' },
-  { label: '04. LOC', value: 'Colombia 🇨🇴' },
-] as const;
 
 /* ─────────────────────────────────────────────────
    NAVEGACIÓN SOCIAL Y CONFIGURACIÓN DE ICONOS
@@ -56,10 +32,7 @@ const SOCIAL = [
   },
 ] as const;
 
-const PROFILE_PHOTO = {
-  src: '/profilePhoto.webp',
-  alt: `${CONTENT.name} — Analista y Desarrollador de Software colombiano.`,
-};
+const STAT_KEYS = ['stack', 'focus', 'status', 'location'] as const;
 
 /* ─────────────────────────────────────────────────
    SUB-COMPONENTES ATÓMICOS
@@ -71,6 +44,7 @@ interface ButtonSocialProps {
   label: string;
   iconName: SocialIconName;
   variant: 'primary' | 'glass';
+  ariaLabel: string;
 }
 
 /**
@@ -79,7 +53,13 @@ interface ButtonSocialProps {
  * - `primary`: Botón de estado sólido con sombra difusa para capturar la interacción principal (CTA).
  * - `glass`: Botón translúcido acoplado al utilitario nativo v4 `glass-card`.
  */
-const ButtonSocial = ({ url, label, iconName, variant }: ButtonSocialProps) => {
+const ButtonSocial = ({
+  url,
+  label,
+  iconName,
+  variant,
+  ariaLabel,
+}: ButtonSocialProps) => {
   const Icon = IconMap.social[iconName];
   const isExternal = url.startsWith('http');
 
@@ -96,7 +76,7 @@ const ButtonSocial = ({ url, label, iconName, variant }: ButtonSocialProps) => {
       href={url}
       target={isExternal ? '_blank' : '_self'}
       {...(isExternal && { rel: 'noopener noreferrer' })}
-      aria-label={`Perfil de ${label} de ${CONTENT.name}`}
+      aria-label={ariaLabel}
       className={`${baseClasses} ${variantClasses}`}
     >
       {Icon && <Icon className="size-4" />}
@@ -115,7 +95,12 @@ const ButtonSocial = ({ url, label, iconName, variant }: ButtonSocialProps) => {
  * cronometradas mediante aceleración por hardware (`will-change-transform`), ring reactivo
  * al hover del mouse y marcado de accesibilidad estricto (WAI-ARIA).
  */
-export default function Hero() {
+export default async function Hero() {
+  const t = await getTranslations('pages.home.hero');
+
+  const name = t('name');
+  const badge = t('badge');
+
   return (
     <section
       aria-labelledby="hero-title"
@@ -126,7 +111,7 @@ export default function Hero() {
         {/* Badge de Disponibilidad Laboral Animado 
         TODO: Extraer a un componente atómico reutilizable `<Badge />*/}
 
-        {CONTENT.badge && (
+        {badge && (
           <div className="border-accent/40 relative inline-flex items-center justify-center overflow-hidden rounded-full border p-[1px] select-none">
             <span
               aria-hidden
@@ -140,7 +125,7 @@ export default function Hero() {
                 <span className="bg-accent absolute inline-flex size-full animate-[ping_2s_cubic-bezier(0.25,0,0,1)_infinite] rounded-full opacity-75" />
                 <span className="bg-accent relative inline-flex size-2.5 rounded-full" />
               </span>
-              {CONTENT.badge}
+              {badge}
             </span>
           </div>
         )}
@@ -151,49 +136,54 @@ export default function Hero() {
             id="hero-title"
             className="text-accent text-center text-4xl leading-none font-black sm:text-5xl lg:text-left lg:text-6xl"
           >
-            {CONTENT.name}
+            {name}
           </h1>
           <h2 className="text-muted-foreground text-center text-xs font-medium tracking-wider uppercase sm:text-sm lg:text-left lg:text-base">
-            {CONTENT.role}
+            {t('role')}
           </h2>
         </div>
         {/* Descripción */}
         <p className="text-muted-foreground/90 max-w-2xl text-center font-sans text-sm leading-relaxed tracking-normal sm:text-base lg:text-left">
-          {CONTENT.description}
+          {t.rich('description', {
+            strong: (chunks) => <strong>{chunks}</strong>,
+          })}
         </p>
 
         {/* Barra de Navegación Social */}
-        <nav aria-label="Redes sociales y contacto" className="w-full">
+        <nav aria-label={t('socialNav')} className="w-full">
           <ul className="m-0 flex list-none flex-wrap justify-center gap-3 p-0 lg:justify-start">
             {/* TODO: Migrar la lógica de enrutamiento a un componente aislado y reutilizable.
                 Motivo: Seguir las buenas prácticas oficiales de Next.js. Se debe renderizar un elemento 
                 `<a>` nativo para URLs externas y el componente `<Link>` de framework exclusivamente para 
                 navegación interna, evitando sobrecargar el enrutador del cliente con prefeching innecesario.
             */}
-            {SOCIAL.map((network) => (
-              <li key={network.name}>
-                <ButtonSocial
-                  url={network.url}
-                  label={network.name}
-                  iconName={network.icon}
-                  variant={network.variant}
-                />
-              </li>
-            ))}
+            {SOCIAL.map((network) => {
+              const label = t(`social.${network.name}`);
+
+              return (
+                <li key={network.name}>
+                  <ButtonSocial
+                    url={network.url}
+                    label={label}
+                    iconName={network.icon}
+                    variant={network.variant}
+                    ariaLabel={t('socialProfileAria', { name, network: label })}
+                  />
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
         {/* Micro-bento de Datos Técnicos Completos (SEO / Sintaxis Semántica) */}
         <dl className="border-foreground/10 mt-4 grid w-full grid-cols-2 gap-4 border-t pt-6 sm:gap-3 md:grid-cols-4">
-          {STATS.map(({ label, value }) => (
-            <div key={label} className="flex flex-col gap-1">
-              {/* Término de definición (Label) */}
+          {STAT_KEYS.map((key) => (
+            <div key={key} className="flex flex-col gap-1">
               <dt className="text-primary font-mono text-xs font-medium tracking-widest uppercase opacity-90 lg:text-[11px]">
-                {label}
+                {t(`stats.${key}.label`)}
               </dt>
-              {/* Descripción del término (Value) */}
               <dd className="text-foreground balance text-sm font-medium">
-                {value}
+                {t(`stats.${key}.value`)}
               </dd>
             </div>
           ))}
@@ -215,8 +205,8 @@ export default function Hero() {
         {/* Contenedor Máscara con Transición de Grayscale */}
         <div className="ring-foreground/10 group-hover:ring-primary/50 relative z-10 h-64 w-64 overflow-hidden rounded-2xl shadow-2xl ring-1 transition-all duration-500 md:h-80 md:w-80 lg:h-[400px] lg:w-[400px]">
           <Image
-            src={PROFILE_PHOTO.src}
-            alt={PROFILE_PHOTO.alt}
+            src="/profilePhoto.webp"
+            alt={t('profilePhotoAlt', { name })}
             width={400}
             height={400}
             priority
@@ -247,7 +237,7 @@ export default function Hero() {
               />
             </svg>
             <span className="text-foreground font-mono text-xs">
-              Software_Eng.exe
+              {t('floatingTag')}
             </span>
           </div>
         </div>

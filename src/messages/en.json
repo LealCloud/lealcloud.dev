@@ -1,1 +1,71 @@
-{}
+{
+  "pages": {
+    "home": {
+      "hero": {
+        "badge": "Available for work",
+        "name": "Steven Leal T.",
+        "role": "Software Engineer & Architect",
+        "description": "Student of <strong>Colombian software analyst and developer 🇨🇴</strong>. Specialized in high-performance web development: scalable architectures, clean code, and business-oriented delivery.",
+        "profilePhotoAlt": "{name} — Colombian Software Analyst and Developer.",
+        "socialNav": "Social networks and contact",
+        "socialProfileAria": "{name}'s {network} profile",
+        "floatingTag": "Software_Eng.exe",
+        "stats": {
+          "stack": {
+            "label": "01. STACK",
+            "value": "React / Next.js"
+          },
+          "focus": {
+            "label": "02. FOCUS",
+            "value": "Cloud Architecture"
+          },
+          "status": {
+            "label": "03. STATUS",
+            "value": "Open for Collab"
+          },
+          "location": {
+            "label": "04. LOC",
+            "value": "Colombia 🇨🇴"
+          }
+        },
+        "social": {
+          "contact": "contact",
+          "github": "github",
+          "linkedin": "linkedin"
+        }
+      }
+    }
+  },
+  "layout": {
+    "header": {
+      "brandAriaLabel": "Go to home",
+      "navigation": {
+        "home": "Home",
+        "projects": "Projects",
+        "lab": "Lab",
+        "blog": "Blog",
+        "contact": "Contact",
+        "github": "GitHub",
+        "linkedin": "LinkedIn"
+      },
+      "navDesktopAria": "Main desktop navigation",
+      "navMobileAria": "Main mobile navigation",
+      "menuOpen": "Open navigation menu",
+      "menuClose": "Close navigation menu"
+    },
+    "footer": {
+      "copyright": "© 2026 LealCloud.Dev.",
+      "designedBy": "Designed and Developed by {author}",
+      "author": "Steven Leal",
+      "socialNavAria": "Footer contact links",
+      "social": {
+        "email": "Visit contact page",
+        "github": "Visit GitHub profile",
+        "linkedin": "Visit LinkedIn profile"
+      }
+    },
+    "themeToggle": {
+      "ariaLabel": "Toggle theme"
+    }
+  }
+}

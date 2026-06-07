@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { NAVIGATION_MAP, type InternalHref } from '@/config/navigation';
+import { type InternalHref } from '@/config/navigation';
 import { cn } from '@/utilities/cn';
 
 /**
@@ -29,13 +29,11 @@ export interface CustomLinkProps extends Omit<
  */
 export const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
   ({ href, label, className, children, ...props }, ref) => {
-    const foundRoute = NAVIGATION_MAP.find((route) => route.href === href);
-    const resolvedLabel = label ?? foundRoute?.label;
-    const renderContent = children ?? resolvedLabel ?? href;
+    const renderContent = children ?? label ?? href;
 
     const isChildrenText = typeof children === 'string';
     const automaticAriaLabel =
-      children && !isChildrenText ? resolvedLabel : undefined;
+      children && !isChildrenText ? label : undefined;
 
     const isExternal =
       typeof href === 'string' &&

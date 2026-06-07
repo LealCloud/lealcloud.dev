@@ -12,6 +12,7 @@ import { Providers } from '@/providers';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer';
 import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 
 /**
  * @fileoverview Componente de Layout Raíz (RootLayout) del proyecto.
@@ -72,11 +73,12 @@ export default async function RootLayout({
   params,
 }: Readonly<RootLayoutProps>) {
   const { locale } = await params;
+  const messages = await getMessages();
 
   return (
     <html lang={locale} className={`${lato.variable} ${lexend.variable}`}>
       <body>
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>
           <Providers>
             <Header />
             {children}

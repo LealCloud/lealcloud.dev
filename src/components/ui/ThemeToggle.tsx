@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { IconMap } from '@/lib/iconMap';
 import { useTheme } from '@/providers/Theme';
 
@@ -28,6 +29,7 @@ export default function ThemeToggle({
   size = 36,
 }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
+  const t = useTranslations('layout.themeToggle');
   const [mounted, setMounted] = useState(false);
 
   // Sincroniza el ciclo de vida para autorizar el renderizado del cliente post-hidratación
@@ -79,7 +81,7 @@ export default function ThemeToggle({
     <button
       role="switch"
       aria-checked={isDark}
-      aria-label="Alternar tema"
+      aria-label={t('ariaLabel')}
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className={`bg-foreground relative flex cursor-pointer items-center self-center justify-self-center shadow-xs outline-hidden transition-colors duration-400 ease-in-out ${className}`}
       style={style}
