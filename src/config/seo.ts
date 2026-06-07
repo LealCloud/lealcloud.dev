@@ -1,63 +1,25 @@
-// src/config/seo.ts
-
 /**
- * TODO: Migrar la constante estática de metadatos a la función dinámica generateMetadata.
- * Motivo: Permitir la internacionalización (i18n) de las etiquetas SEO (Title, Description, OpenGraph)
- * consumiendo de forma asíncrona los mensajes correspondientes al segmento `params.locale` actual.
+ * @fileoverview Configuración centralizada e internacionalizada de metadatos SEO y Open Graph.
+ * Consume los mensajes asíncronos gestionados por next-intl.
+ * @module Config/SEO
  */
+
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
+
+export type SupportedLocales = 'es' | 'en';
 
 /**
- * @fileoverview Configuración centralizada de metadatos SEO y Open Graph para la aplicación.
- * Este archivo define los objetos base de Next.js Metadata para asegurar consistencia
- * en el indexado de motores de búsqueda y la presentación en redes sociales.
- * * @module Config/SEO
+ * Metadatos estáticos base independientes del idioma del usuario.
  */
-
-/**
- * Objeto de metadatos base para el enrutador de Next.js (App Router).
- * * @remarks
- * **AVISO PARA FORKS / TEMPLATES:**
- * Si estás utilizando este proyecto como plantilla (boilerplate) para tu propio sitio:
- * - Se permite la modificación libre de los campos `title`, `description`, `keywords` y `openGraph` para adaptarlos a tu marca personal.
- * - Por respeto a los términos de la licencia open-source de este repositorio, **no se deben remover ni alterar las propiedades de autoría original** si se mantiene la arquitectura base intacta. Puedes añadirte a ti mismo en el arreglo `authors`, manteniendo al creador original.
- * * @type {Metadata}
- * @see {@link https://nextjs.org/docs/app/api-reference/functions/generate-metadata Next.js Metadata API}
- */
-
-export const baseMetadata: Metadata = {
-  title: {
-    default: 'Steven Leal | Developer',
-    template: '%s | lealcloud.dev',
-  },
-  description:
-    'Portfolio profesional de Marlon Steven Leal Talero - Desarrollador FullStack & Arquitecto de Software enfocado en soluciones escalables y de alto rendimiento.',
-
-  /** Atribución obligatoria del creador del core del proyecto */
+export const baseStaticMetadata: Partial<Metadata> = {
   creator: 'Marlon Steven Leal Talero',
-
-  /** Lista de autores implicados en el desarrollo del software */
   authors: [
     { name: 'Marlon Steven Leal Talero', url: 'https://lealcloud.dev' },
   ],
-
-  /** Configuración de favicons e iconos de la aplicación */
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },
-
-  keywords: [
-    'Marlon Steven Leal Talero',
-    'Marlon Leal',
-    'lealcloud',
-    'FullStack Developer',
-    'Software Architect',
-    'Next.js',
-    'React',
-    'TypeScript',
-    'Tailwind CSS',
-    'Colombia Developer',
-  ],
   robots: {
     index: true,
     follow: true,
@@ -69,24 +31,48 @@ export const baseMetadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  openGraph: {
-    type: 'website',
-    locale: 'es_CO',
-    url: 'https://lealcloud.dev',
-    title:
-      'Marlon Steven Leal Talero | FullStack Developer & Software Architect',
-    description:
-      'Portfolio profesional de Marlon Steven Leal Talero. Descubre mis proyectos de software y artículos técnicos sobre arquitectura y desarrollo web.',
-    siteName: 'lealcloud.dev',
-    images: [
-      {
+};
+
+/**
+ * Genera el objeto completo de Metadata consumiendo las traducciones de next-intl.
+ * @param locale - Código del idioma actual obtenido desde los parámetros de la ruta.
+ * @returns Promesa que resuelve el objeto Metadata de Next.js App Router.
+ */
+export async function getLocalizedMetadata(locale: string): Promise<Metadata> {
+  // Aseguramos fallback en caso de un locale inválido antes de invocar los mensajes
+  const lang = (locale === 'en' || locale === 'es' ? locale : 'es') as SupportedLocales;
+  
+  // Cargamos el namespace 'Metadata' de los JSONs correspondientes
+  const t = await getTranslations({ locale: lang, namespace: 'Metadata' });
+
+  // Recuperamos el array de keywords de forma segura mediante t.raw
+  const keywordsArray = t.raw('keywords') as string[];
+
+  return {
+    ...baseStaticMetadata,
+    title: {
+      default: t('titleDefault'),
+      template: '%s | lealcloud.dev',
+    },
+    description: t('description'),
+    keywords: Array.isArray(keywordsArray) ? keywordsArray : [],
+    openGraph: {
+      type: 'website',
+      locale: t('ogLocale'),
+      url: 'https://lealcloud.dev',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      siteName: 'lealcloud.dev',
+      images: [
+        {
         // TODO: Diseñar y exportar el banner oficial de lealcloud.dev (Social Card)
         // Guardar la imagen final en: public/images/og-main.png
-        url: '/images/og-main.png',
-        width: 1200,
-        height: 630,
-        alt: 'Marlon Steven Leal Talero | FullStack Developer & Software Architect',
-      },
-    ],
-  },
-};
+          url: '/images/og-main.png',
+          width: 1200,
+          height: 630,
+          alt: t('ogAlt'),
+        },
+      ],
+    },
+  };
+}

@@ -1,4 +1,58 @@
 {
+  "Metadata": {
+    "titleDefault": "Steven Leal | Developer",
+    "description": "Portfolio profesional de Marlon Steven Leal Talero - Desarrollador FullStack & Arquitecto de Software enfocado en soluciones escalables y de alto rendimiento.",
+    "ogTitle": "Marlon Steven Leal Talero | FullStack Developer & Software Architect",
+    "ogDescription": "Portfolio profesional de Marlon Steven Leal Talero. Descubre mis proyectos de software y artículos técnicos sobre arquitectura y desarrollo web.",
+    "ogLocale": "es_CO",
+    "ogAlt": "Marlon Steven Leal Talero | FullStack Developer & Software Architect",
+    "keywords": [
+      "Marlon Steven Leal Talero",
+      "Marlon Leal",
+      "lealcloud",
+      "FullStack Developer",
+      "Arquitecto de Software",
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Colombia Developer"
+    ]
+  },
+
+  "layout": {
+    "header": {
+      "brandAriaLabel": "Ir al inicio",
+      "navigation": {
+        "home": "Inicio",
+        "projects": "Proyectos",
+        "lab": "Laboratorio",
+        "blog": "Blog",
+        "contact": "Contacto",
+        "github": "GitHub",
+        "linkedin": "LinkedIn"
+      },
+      "navDesktopAria": "Navegación principal desktop",
+      "navMobileAria": "Navegación principal móvil",
+      "menuOpen": "Abrir menú de navegación",
+      "menuClose": "Cerrar menú de navegación"
+    },
+    "footer": {
+      "copyright": "© 2026 LealCloud.Dev.",
+      "designedBy": "Diseñado y Desarrollado por {author}",
+      "author": "Steven Leal Talero",
+      "socialNavAria": "Enlaces de contacto del pie de página",
+      "social": {
+        "email": "Visitar la página de contacto",
+        "github": "Visitar perfil de GitHub",
+        "linkedin": "Visitar perfil de LinkedIn"
+      }
+    },
+    "themeToggle": {
+      "ariaLabel": "Alternar tema"
+    }
+  },
+
   "pages": {
     "home": {
       "hero": {
@@ -34,38 +88,6 @@
           "linkedin": "linkedin"
         }
       }
-    }
-  },
-  "layout": {
-    "header": {
-      "brandAriaLabel": "Ir al inicio",
-      "navigation": {
-        "home": "Inicio",
-        "projects": "Proyectos",
-        "lab": "Laboratorio",
-        "blog": "Blog",
-        "contact": "Contacto",
-        "github": "GitHub",
-        "linkedin": "LinkedIn"
-      },
-      "navDesktopAria": "Navegación principal desktop",
-      "navMobileAria": "Navegación principal móvil",
-      "menuOpen": "Abrir menú de navegación",
-      "menuClose": "Cerrar menú de navegación"
-    },
-    "footer": {
-      "copyright": "© 2026 LealCloud.Dev.",
-      "designedBy": "Diseñado y Desarrollado por {author}",
-      "author": "Steven Leal Talero",
-      "socialNavAria": "Enlaces de contacto del pie de página",
-      "social": {
-        "email": "Visitar la página de contacto",
-        "github": "Visitar perfil de GitHub",
-        "linkedin": "Visitar perfil de LinkedIn"
-      }
-    },
-    "themeToggle": {
-      "ariaLabel": "Alternar tema"
     }
   }
 }
