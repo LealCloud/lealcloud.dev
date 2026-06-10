@@ -35,9 +35,9 @@ export type NavLink = BaseNavLink & {
 
 export const NAVIGATION_MAP = [
   { href: '/', labelKey: 'home', exact: true },
-  { href: '/projects', labelKey: 'projects' },
-  { href: '/lab', labelKey: 'lab' },
-  { href: '/blog', labelKey: 'blog' },
+  { href: '/projects', labelKey: 'projects', hideInHeader: true },
+  { href: '/lab', labelKey: 'lab', hideInHeader: true },
+  { href: '/blog', labelKey: 'blog', hideInHeader: true },
   { href: '/contact', labelKey: 'contact', hideInHeader: true },
   {
     href: 'https://github.com/LealCloud',

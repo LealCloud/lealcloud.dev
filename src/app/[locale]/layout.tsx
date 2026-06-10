@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import { Lato, Lexend } from 'next/font/google';
-import { getLocalizedMetadata } from '@/config/seo';
+import { getLocalizedMetadata, type SupportedLocales } from '@/config/seo';
 import '../globals.css';
 
 import { Providers } from '@/providers';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -44,10 +45,13 @@ export default async function RootLayout({
 }: Readonly<RootLayoutProps>) {
   const { locale } = await params;
   const messages = await getMessages();
+  const lang = (locale === 'en' || locale === 'es' ? locale : 'es') as SupportedLocales;
+  const t = await getTranslations({ locale: lang, namespace: 'Metadata' });
 
   return (
     <html lang={locale} className={`${lato.variable} ${lexend.variable}`}>
       <body>
+        <JsonLd locale={lang} description={t('description')} />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
             <Header />

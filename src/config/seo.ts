@@ -1,21 +1,19 @@
-/**
- * @fileoverview Configuración centralizada e internacionalizada de metadatos SEO y Open Graph.
- * Consume los mensajes asíncronos gestionados por next-intl.
- * @module Config/SEO
- */
-
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import {
+  SITE_URL,
+  getAlternateLanguages,
+  getLocalizedUrl,
+  type IndexableRoute,
+} from '@/config/site';
 
 export type SupportedLocales = 'es' | 'en';
 
-/**
- * Metadatos estáticos base independientes del idioma del usuario.
- */
-export const baseStaticMetadata: Partial<Metadata> = {
+export const baseStaticMetadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   creator: 'Marlon Steven Leal Talero',
   authors: [
-    { name: 'Marlon Steven Leal Talero', url: 'https://lealcloud.dev' },
+    { name: 'Marlon Steven Leal Talero', url: SITE_URL },
   ],
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
@@ -33,20 +31,17 @@ export const baseStaticMetadata: Partial<Metadata> = {
   },
 };
 
-/**
- * Genera el objeto completo de Metadata consumiendo las traducciones de next-intl.
- * @param locale - Código del idioma actual obtenido desde los parámetros de la ruta.
- * @returns Promesa que resuelve el objeto Metadata de Next.js App Router.
- */
-export async function getLocalizedMetadata(locale: string): Promise<Metadata> {
-  // Aseguramos fallback en caso de un locale inválido antes de invocar los mensajes
-  const lang = (locale === 'en' || locale === 'es' ? locale : 'es') as SupportedLocales;
-  
-  // Cargamos el namespace 'Metadata' de los JSONs correspondientes
-  const t = await getTranslations({ locale: lang, namespace: 'Metadata' });
+export async function getLocalizedMetadata(
+  locale: string,
+  pathname: IndexableRoute = '/',
+): Promise<Metadata> {
+  const lang = (
+    locale === 'en' || locale === 'es' ? locale : 'es'
+  ) as SupportedLocales;
 
-  // Recuperamos el array de keywords de forma segura mediante t.raw
+  const t = await getTranslations({ locale: lang, namespace: 'Metadata' });
   const keywordsArray = t.raw('keywords') as string[];
+  const pageUrl = getLocalizedUrl(lang, pathname);
 
   return {
     ...baseStaticMetadata,
@@ -56,23 +51,31 @@ export async function getLocalizedMetadata(locale: string): Promise<Metadata> {
     },
     description: t('description'),
     keywords: Array.isArray(keywordsArray) ? keywordsArray : [],
+    alternates: {
+      canonical: pageUrl,
+      languages: getAlternateLanguages(pathname),
+    },
     openGraph: {
       type: 'website',
       locale: t('ogLocale'),
-      url: 'https://lealcloud.dev',
+      url: pageUrl,
       title: t('ogTitle'),
       description: t('ogDescription'),
       siteName: 'lealcloud.dev',
       images: [
         {
-        // TODO: Diseñar y exportar el banner oficial de lealcloud.dev (Social Card)
-        // Guardar la imagen final en: public/images/og-main.png
-          url: '/images/og-main.png',
-          width: 1200,
-          height: 630,
+          url: '/profilePhoto.webp',
+          width: 400,
+          height: 400,
           alt: t('ogAlt'),
         },
       ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      images: ['/profilePhoto.webp'],
     },
   };
 }
