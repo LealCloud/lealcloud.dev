@@ -1,17 +1,16 @@
 'use client';
 
-import { forwardRef, type ComponentPropsWithoutRef } from 'react';
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from 'react';
 import { CustomLink, type CustomLinkProps } from '../Link';
-import { IconMap, type UiIconName, type SocialIconName } from '@/lib/iconMap';
+import { IconMap, type SocialIconName, type UiIconName } from '@/lib/iconMap';
 import { cn } from '@/utilities/cn';
 
-// ==========================================
-// 1. TIPADOS Y LOGICA DE CONTROL (TYPESCRIPT)
-// ==========================================
-
-export type CommonButtonVariant = 'primary' | 'secondary';
-export type SocialButtonVariant = 'social';
-export type ButtonVariant = CommonButtonVariant | SocialButtonVariant;
+export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonVariant = 'primary' | 'secondary' | 'social';
 
 interface WithTextContent {
   children: React.ReactNode;
@@ -20,122 +19,173 @@ interface WithTextContent {
 
 interface OnlyIconContent {
   children?: never;
-  'aria-label': string; // Obligatorio por accesibilidad si no hay texto
+  'aria-label': string;
 }
 
 type ButtonContentProps = WithTextContent | OnlyIconContent;
 
 interface BaseProps {
+  variant: ButtonVariant;
+  icon?: SocialIconName | UiIconName;
+  iconPosition?: 'left' | 'right';
+  size?: ButtonSize;
   fullWidth?: boolean;
   className?: string;
-  iconPosition?: 'left' | 'right';
 }
-
-interface CommonIconProps {
-  variant: CommonButtonVariant;
-  icon?: UiIconName;
-}
-
-interface SocialIconProps {
-  variant: SocialButtonVariant;
-  icon?: SocialIconName;
-}
-
-type VariantAndIconProps = CommonIconProps | SocialIconProps;
 
 type ButtonAsLink = BaseProps &
-  VariantAndIconProps &
   ButtonContentProps &
-  Omit<CustomLinkProps, 'variant' | 'icon' | 'children' | 'aria-label'>;
+  Omit<CustomLinkProps, 'children' | 'className' | 'aria-label'> & {
+    href: CustomLinkProps['href'];
+    type?: never;
+  };
 
 type ButtonAsButton = BaseProps &
-  VariantAndIconProps &
   ButtonContentProps &
   Omit<
     ComponentPropsWithoutRef<'button'>,
-    'variant' | 'children' | 'aria-label'
+    'children' | 'className' | 'aria-label'
   > & {
-    href?: never; // Evita que se pase un href a un botón nativo
+    href?: never;
   };
 
 export type ButtonProps = ButtonAsLink | ButtonAsButton;
 
-// ==========================================
-// 2. COMPONENTE PRINCIPAL (LOGICA Y RENDER)
-// ==========================================
+const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
+  primary: cn(
+    'border border-transparent bg-accent text-white shadow-lg shadow-accent/25',
+    'hover:brightness-110 active:brightness-95',
+    'focus-visible:ring-accent',
+  ),
+  secondary: cn(
+    'border border-transparent bg-primary text-white shadow-lg shadow-primary/25',
+    'hover:brightness-110 active:brightness-95',
+    'focus-visible:ring-primary',
+  ),
+  social: cn(
+    'border border-foreground/10 bg-foreground/5 text-foreground',
+    'hover:border-foreground/25 hover:bg-foreground/10',
+    'focus-visible:ring-primary',
+  ),
+};
+
+const BUTTON_SIZES: Record<ButtonSize, { default: string; iconOnly: string }> =
+  {
+    sm: {
+      default: 'h-9 gap-1.5 rounded-xl px-4 text-xs',
+      iconOnly: 'size-9 rounded-xl',
+    },
+    md: {
+      default: 'h-11 gap-2 rounded-xl px-5 text-sm',
+      iconOnly: 'size-11 rounded-xl',
+    },
+    lg: {
+      default: 'h-12 gap-2.5 rounded-2xl px-7 text-base',
+      iconOnly: 'size-12 rounded-2xl',
+    },
+  };
+
+function resolveIcon(icon: SocialIconName | UiIconName): ReactNode {
+  const IconComponent =
+    IconMap.social[icon as SocialIconName] ?? IconMap.ui[icon as UiIconName];
+
+  if (!IconComponent) return null;
+
+  return <IconComponent className="size-4 shrink-0" aria-hidden="true" />;
+}
+
+function isLinkProps(props: ButtonProps): props is ButtonAsLink {
+  return 'href' in props && props.href !== undefined;
+}
 
 export const Button = forwardRef<
   HTMLButtonElement | HTMLAnchorElement,
   ButtonProps
->((props, ref) => {
+>(function Button(props, ref) {
   const {
     variant,
     icon,
     iconPosition = 'left',
-    fullWidth = false, // Corregido: booleano real nativo
+    size = 'md',
+    fullWidth = false,
     className,
     children,
-    ...restProps
+    'aria-label': ariaLabel,
   } = props;
 
-  // Guarda lógica: Discriminamos si debe actuar como enlace evaluando las propiedades restantes
-  const isLink = 'href' in restProps;
+  const isIconOnly = !children && !!icon;
+  const sizeClasses = BUTTON_SIZES[size];
 
-  // Lógica de Negocio: Resolución dinámica del Icono desde el mapa importado
-  const IconComponent = (() => {
-    if (!icon) return null;
-
-    if (variant === 'social') {
-      return IconMap.social[icon as SocialIconName];
-    }
-
-    // Aquí TS sabe que la variante es 'primary' o 'secondary', por ende es UiIconName
-    return IconMap.ui[icon as UiIconName];
-  })();
-
-  // Lógica de Renderizado de Hijos: Inyección posicional de iconos respecto al texto
-  const buttonContent = (
-    <>
-      {IconComponent && iconPosition === 'left' && <IconComponent />}
-      {children}
-      {IconComponent && iconPosition === 'right' && <IconComponent />}
-    </>
-  );
-
-  // Unificación de Clases Lógicas (Aquí es donde agregas tus clases base de diseño)
   const finalClasses = cn(
-    'inline-flex items-center justify-center transition-colors select-none', // Ejemplo de base lógica
+    'inline-flex items-center justify-center font-medium',
+    'transition-all duration-200 select-none active:scale-95',
+    'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
+    BUTTON_VARIANTS[variant],
+    isIconOnly ? sizeClasses.iconOnly : sizeClasses.default,
     fullWidth && 'w-full',
     className,
   );
 
-  // RENDER CONDICIONAL INTELIGENTE
+  const iconEl = icon ? resolveIcon(icon) : null;
+  const content = isIconOnly ? (
+    iconEl
+  ) : (
+    <>
+      {iconPosition === 'left' && iconEl}
+      {children}
+      {iconPosition === 'right' && iconEl}
+    </>
+  );
 
-  if (isLink) {
-    // Forzamos a TypeScript a tratar las propiedades restantes bajo el contrato de CustomLink
-    const linkProps = restProps as Omit<CustomLinkProps, 'children'>;
+  if (isLinkProps(props)) {
+    const {
+      href,
+      variant: _variant,
+      icon: _icon,
+      iconPosition: _iconPosition,
+      size: _size,
+      fullWidth: _fullWidth,
+      className: _className,
+      children: _children,
+      'aria-label': _ariaLabel,
+      ...linkRest
+    } = props;
 
     return (
       <CustomLink
-        ref={ref as React.Ref<HTMLAnchorElement>} // Type casting seguro de la referencia polimórfica
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        href={href}
         className={finalClasses}
-        {...linkProps}
+        aria-label={ariaLabel}
+        {...linkRest}
       >
-        {buttonContent}
+        {content}
       </CustomLink>
     );
   }
 
-  // Por descarte estricto, si no es link, opera como un botón nativo de HTML
-  const buttonProps = restProps as ComponentPropsWithoutRef<'button'>;
+  const {
+    variant: _variant,
+    icon: _icon,
+    iconPosition: _iconPosition,
+    size: _size,
+    fullWidth: _fullWidth,
+    className: _className,
+    children: _children,
+    'aria-label': _ariaLabel,
+    type = 'button',
+    ...buttonRest
+  } = props;
 
   return (
     <button
-      ref={ref as React.Ref<HTMLButtonElement>} // Type casting seguro de la referencia polimórfica
+      ref={ref as React.Ref<HTMLButtonElement>}
+      type={type}
       className={finalClasses}
-      {...buttonProps}
+      aria-label={ariaLabel}
+      {...buttonRest}
     >
-      {buttonContent}
+      {content}
     </button>
   );
 });

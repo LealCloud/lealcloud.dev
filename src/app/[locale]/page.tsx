@@ -1,8 +1,8 @@
 import Hero from '@/components/heros/Hero';
 export default function Home() {
   return (
-    <div>
+    <main>
       <Hero />
-    </div>
+    </main>
   );
 }
