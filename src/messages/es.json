@@ -96,6 +96,35 @@
           "github": "github",
           "linkedin": "linkedin"
         }
+      },
+      "howIWork": {
+        "title": "Mi enfoque: <strong>Pensar antes de codificar</strong>",
+        "subtitle": "El desarrollo de software es una solución de ingeniería, no un ejercicio de sintaxis. En SpeakUp, el código fue el resultado final de un proceso de arquitectura, no el punto de partida.",
+        "features": {
+          "architecture": {
+            "title": "Diseñar antes de implementar",
+            "text": "Mientras el requerimiento académico pedía algo simple, decidí estructurar el proyecto de forma profesional. La carpeta <strong>docs/</strong> en mi repositorio no es adorno: ahí documenté los protocolos y la identidad del sistema <strong>antes de escribir la primera línea</strong>."
+          },
+          "validation": {
+            "title": "Integridad de datos de extremo a extremo",
+            "text": "Más allá de las validaciones básicas de HTML/JS, implementé <strong>Zod + React Hook Form</strong> para asegurar el tipado de los datos en todo el flujo. Al mantener los esquemas completamente independientes de la UI, el sistema es <strong>modular y escalable</strong>."
+          },
+          "solid": {
+            "title": "Modularidad y Principios SOLID",
+            "text": "En lugar de crear código desordenado, guié el desarrollo de la UI bajo los <strong>principios SOLID</strong>. Comprender estos conceptos me llevó a diseñar piezas como <strong>Button</strong>, <strong>Container</strong> y <strong>Badge</strong> con una sola responsabilidad: no son copias genéricas, están creados a la medida del sistema con variantes consistentes y tipado estricto."
+          },
+          "growth": {
+            "title": "Ir más allá del estándar",
+            "text": "Aunque el requerimiento exigía un dominio básico de HTML, CSS, JavaScript y Git, entendí que un desarrollador <strong>nunca debe conformarse con el mínimo</strong>. Decidí explorar tecnologías avanzadas y diseñar una arquitectura que realmente reflejara el <strong>dominio pedagógico de SpeakUp</strong>."
+          }
+        },
+        "projectCard": {
+          "badge": "Proyecto Académico",
+          "title": "SpeakUp Institute",
+          "alt": "Captura de pantalla de la interfaz móvil de SpeakUp Institute, mostrando un editor de código simulado con un componente de React y el mensaje Estamos refactorizando la educación.",
+          "figcaption": "Un desafío personal diseñado para dominar <strong>React</strong>, <strong>TypeScript</strong> y herramientas de la industria de forma autónoma."
+        },
+        "cta": "Ver en GitHub"
       }
     }
   }

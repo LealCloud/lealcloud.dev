@@ -7,6 +7,13 @@ import {
   RiCloseLine,
 } from 'react-icons/ri';
 
+import {
+  FaCompassDrafting,
+  FaShieldCat,
+  FaPuzzlePiece,
+  FaChessRook,
+} from 'react-icons/fa6';
+
 import { BsEnvelopeArrowUpFill, BsGithub, BsLinkedin } from 'react-icons/bs';
 
 /**
@@ -32,6 +39,10 @@ export const IconMap = {
     dark: RiMoonClearFill,
     menu: RiMenuLine,
     close: RiCloseLine,
+    architecture: FaCompassDrafting,
+    validation: FaShieldCat,
+    solid: FaPuzzlePiece,
+    growth: FaChessRook,
   },
   social: {
     email: BsEnvelopeArrowUpFill,
