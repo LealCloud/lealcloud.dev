@@ -8,7 +8,33 @@ import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from 'next-intl/server';
+
+/** Client Components in the global shell — exclude server-only namespaces like `footer`. */
+const CLIENT_LAYOUT_NAMESPACES = [
+  'header',
+  'themeToggle',
+  'languageSwitcher',
+] as const;
+
+function pickClientLayoutMessages(
+  messages: Awaited<ReturnType<typeof getMessages>>,
+) {
+  const layout = messages.layout as Record<
+    (typeof CLIENT_LAYOUT_NAMESPACES)[number],
+    unknown
+  >;
+
+  return {
+    layout: Object.fromEntries(
+      CLIENT_LAYOUT_NAMESPACES.map((key) => [key, layout[key]]),
+    ),
+  };
+}
 
 const lato = Lato({
   subsets: ['latin'],
@@ -44,7 +70,10 @@ export default async function RootLayout({
   params,
 }: Readonly<RootLayoutProps>) {
   const { locale } = await params;
-  const messages = await getMessages();
+  setRequestLocale(locale);
+
+  const allMessages = await getMessages();
+  const clientMessages = pickClientLayoutMessages(allMessages);
   const lang = (locale === 'en' || locale === 'es' ? locale : 'es') as SupportedLocales;
   const t = await getTranslations({ locale: lang, namespace: 'Metadata' });
 
@@ -52,7 +81,7 @@ export default async function RootLayout({
     <html lang={locale} className={`${lato.variable} ${lexend.variable}`}>
       <body>
         <JsonLd locale={lang} description={t('description')} />
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={clientMessages}>
           <Providers>
             <Header />
             {children}
