@@ -33,7 +33,11 @@ export const baseStaticMetadata: Metadata = {
 
 export async function getLocalizedMetadata(
   locale: string,
-  pathname: IndexableRoute = '/',
+  pathname: IndexableRoute | string = '/',
+  overrides?: {
+    title?: string;
+    description?: string;
+  },
 ): Promise<Metadata> {
   const lang = (
     locale === 'en' || locale === 'es' ? locale : 'es'
@@ -42,14 +46,13 @@ export async function getLocalizedMetadata(
   const t = await getTranslations({ locale: lang, namespace: 'Metadata' });
   const keywordsArray = t.raw('keywords') as string[];
   const pageUrl = getLocalizedUrl(lang, pathname);
+  const title = overrides?.title ?? t('titleDefault');
+  const description = overrides?.description ?? t('description');
 
   return {
     ...baseStaticMetadata,
-    title: {
-      default: t('titleDefault'),
-      template: '%s | lealcloud.dev',
-    },
-    description: t('description'),
+    title: pathname === '/' ? { default: title, template: '%s | lealcloud.dev' } : title,
+    description,
     keywords: Array.isArray(keywordsArray) ? keywordsArray : [],
     alternates: {
       canonical: pageUrl,
@@ -59,8 +62,8 @@ export async function getLocalizedMetadata(
       type: 'website',
       locale: t('ogLocale'),
       url: pageUrl,
-      title: t('ogTitle'),
-      description: t('ogDescription'),
+      title: overrides?.title ?? t('ogTitle'),
+      description: overrides?.description ?? t('ogDescription'),
       siteName: 'lealcloud.dev',
       images: [
         {
@@ -73,8 +76,8 @@ export async function getLocalizedMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: t('ogTitle'),
-      description: t('ogDescription'),
+      title: overrides?.title ?? t('ogTitle'),
+      description: overrides?.description ?? t('ogDescription'),
       images: ['/profilePhoto.webp'],
     },
   };

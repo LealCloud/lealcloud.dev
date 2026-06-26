@@ -3,7 +3,8 @@ import { routing, type AppLocale } from '@/i18n/routing';
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://lealcloud.dev';
 
-export const INDEXABLE_ROUTES = ['/'] as const;
+/** Public routes included in sitemap.xml and hreflang alternates. */
+export const INDEXABLE_ROUTES = ['/', '/contact'] as const;
 
 export type IndexableRoute = (typeof INDEXABLE_ROUTES)[number];
 

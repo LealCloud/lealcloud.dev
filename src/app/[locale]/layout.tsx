@@ -62,7 +62,7 @@ export async function generateMetadata({
   params,
 }: Omit<RootLayoutProps, 'children'>): Promise<Metadata> {
   const { locale } = await params;
-  return await getLocalizedMetadata(locale);
+  return getLocalizedMetadata(locale, '/');
 }
 
 export default async function RootLayout({

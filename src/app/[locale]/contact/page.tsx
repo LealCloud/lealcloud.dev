@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/Button';
+import { getLocalizedMetadata } from '@/config/seo';
 import { cn } from '@/utilities/cn';
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 const fieldControl = cn(
@@ -11,6 +13,22 @@ const fieldControl = cn(
   'disabled:cursor-not-allowed disabled:opacity-50',
   'aria-invalid:border-red-600 aria-invalid:focus-visible:ring-red-600/25',
 );
+
+interface ContactPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ContactPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'pages.contact' });
+
+  return getLocalizedMetadata(locale, '/contact', {
+    title: t('title'),
+    description: t('description'),
+  });
+}
 
 export default async function Contact() {
   const t = await getTranslations('pages.contact');
