@@ -125,6 +125,31 @@
         },
         "cta": "View on GitHub"
       }
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Open to job opportunities, internships, and collaborative projects where I can continue growing and contribute high-quality software solutions.",
+      "infoTitle": "Contact Information",
+      "locationTitle": "Location",
+      "locationValue": "Colombia 🇨🇴",
+      "availabilityTitle": "Availability",
+      "availabilityValue": "Remote • Internships • Junior Positions",
+      "form": {
+        "title": "Send Me a Message",
+        "labels": {
+          "name": "Full Name",
+          "email": "Email Address",
+          "subject": "Subject",
+          "message": "Message"
+        },
+        "placeholders": {
+          "name": "e.g. John Smith",
+          "email": "john@example.com",
+          "subject": "e.g. Job Opportunity",
+          "message": "Tell me a little about your message or what you'd like to discuss..."
+        },
+        "submitButton": "Send Message"
+      }
     }
   }
 }

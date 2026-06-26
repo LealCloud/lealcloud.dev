@@ -102,7 +102,7 @@ export default async function HowIWork() {
               />
             </div>
 
-            <div className="relative z-10 flex flex-col gap-4 p-6 pt-32">
+            <div className="relative z-10 flex flex-col gap-4 p-6 pt-8">
               <div
                 aria-hidden="true"
                 className="bg-background/40 pointer-events-none absolute inset-0 rounded-b-2xl backdrop-blur-sm"

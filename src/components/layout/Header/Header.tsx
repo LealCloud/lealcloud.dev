@@ -132,9 +132,9 @@ const NavItem = memo(function NavItem({
           'relative inline-flex w-full items-center justify-center px-4 py-2 md:w-auto md:px-3.5 md:py-1.5',
           'rounded-full text-sm font-medium tracking-wide md:text-xs',
           'transition-all duration-200 ease-out',
-          'focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50 focus-visible:outline-none',
+          'focus-visible:ring-2 focus-visible:ring-(--accent)/50 focus-visible:outline-none',
           active
-            ? 'bg-[var(--accent)]/20 text-[var(--accent)]'
+            ? 'bg-(--accent)/20 text-(--accent)'
             : 'text-foreground/80 hover:bg-foreground/10 hover:text-foreground',
         )}
       >
@@ -142,7 +142,7 @@ const NavItem = memo(function NavItem({
         {active && (
           <span
             aria-hidden="true"
-            className="absolute bottom-1.5 left-1/2 h-[3px] w-[3px] -translate-x-1/2 rounded-full bg-[var(--accent)] md:bottom-1"
+            className="absolute bottom-1.5 left-1/2 h-0.75 w-0.75 -translate-x-1/2 rounded-full bg-(--accent) md:bottom-1"
           />
         )}
       </Link>
@@ -233,7 +233,7 @@ export default function Header() {
           'transition-all duration-500 ease-out',
           'animate-[navIn_0.6s_cubic-bezier(0.16,1,0.3,1)_both]',
           // Si el menú móvil está abierto, modificamos los bordes inferiores para acoplar el panel desplegable
-          isOpen ? 'rounded-[24px]' : 'rounded-full',
+          isOpen ? 'rounded-3xl' : 'rounded-full',
           scrolled &&
             'shadow-[0_8px_32px_-4px_var(--lamp-shadow),0_2px_8px_-2px_oklch(0_0_0/0.10)]',
           !scrolled && 'shadow-[0_4px_16px_-2px_oklch(0_0_0/0.06)]',

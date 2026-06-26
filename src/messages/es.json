@@ -126,6 +126,32 @@
         },
         "cta": "Ver en GitHub"
       }
+    },
+
+    "contact": {
+      "title": "Contacto",
+      "description": "Abierto a oportunidades laborales, prácticas profesionales y proyectos colaborativos donde pueda seguir creciendo y aportar soluciones de software de calidad.",
+      "infoTitle": "Información de contacto",
+      "locationTitle": "Ubicación",
+      "locationValue": "Colombia 🇨🇴",
+      "availabilityTitle": "Disponibilidad",
+      "availabilityValue": "Remoto • Prácticas • Posiciones Junior",
+      "form": {
+        "title": "Envíame un mensaje",
+        "labels": {
+          "name": "Nombre completo",
+          "email": "Correo electrónico",
+          "subject": "Asunto",
+          "message": "Mensaje"
+        },
+        "placeholders": {
+          "name": "Ej. Juan Pérez",
+          "email": "juan@ejemplo.com",
+          "subject": "Ej. Oportunidad laboral",
+          "message": "Cuéntame en qué puedo ayudarte o qué tienes en mente..."
+        },
+        "submitButton": "Enviar mensaje"
+      }
     }
   }
 }
