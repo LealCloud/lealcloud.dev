@@ -17,6 +17,7 @@ export const baseStaticMetadata: Metadata = {
   ],
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    apple: '/apple-touch-icon.png',
   },
   robots: {
     index: true,
