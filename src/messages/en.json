@@ -61,6 +61,36 @@
     }
   },
 
+  "contact": {
+    "validation": {
+      "name": {
+        "min": "Name must be at least 2 characters.",
+        "max": "Name cannot exceed 100 characters.",
+        "regex": "Name can only contain letters."
+      },
+      "email": {
+        "format": "Enter a valid email address.",
+        "max": "Email cannot exceed 254 characters."
+      },
+      "countryCode": {
+        "regex": "Select a valid country code."
+      },
+      "phone": {
+        "regex": "Enter a valid number (6–15 digits)."
+      },
+      "subject": {
+        "min": "Subject must be at least 5 characters.",
+        "max": "Subject cannot exceed 150 characters.",
+        "regex": "Subject contains invalid characters."
+      },
+      "message": {
+        "min": "Message must be at least 20 characters.",
+        "max": "Message cannot exceed 2000 characters.",
+        "regex": "Message contains invalid characters."
+      }
+    }
+  },
+
   "pages": {
     "home": {
       "hero": {

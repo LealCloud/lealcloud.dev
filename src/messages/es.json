@@ -62,6 +62,36 @@
     }
   },
 
+  "contact": {
+    "validation": {
+      "name": {
+        "min": "El nombre debe tener al menos 2 caracteres.",
+        "max": "El nombre no puede superar los 100 caracteres.",
+        "regex": "El nombre solo puede contener letras."
+      },
+      "email": {
+        "format": "Ingresa un correo electrónico válido.",
+        "max": "El correo no puede superar los 254 caracteres."
+      },
+      "countryCode": {
+        "regex": "Selecciona un indicativo válido."
+      },
+      "phone": {
+        "regex": "Ingresa un número válido (6–15 dígitos)."
+      },
+      "subject": {
+        "min": "El asunto debe tener al menos 5 caracteres.",
+        "max": "El asunto no puede superar los 150 caracteres.",
+        "regex": "El asunto contiene caracteres no permitidos."
+      },
+      "message": {
+        "min": "El mensaje debe tener al menos 20 caracteres.",
+        "max": "El mensaje no puede superar los 2000 caracteres.",
+        "regex": "El mensaje contiene caracteres no permitidos."
+      }
+    }
+  },
+
   "pages": {
     "home": {
       "hero": {
