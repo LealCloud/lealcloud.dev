@@ -207,7 +207,7 @@ export default async function Contact() {
             type="submit"
             fullWidth
             className="mt-1 md:mt-2 md:w-auto"
-            
+            disabled
           >
             {t('form.submitButton')}
           </Button>

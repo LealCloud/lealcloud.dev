@@ -1,5 +1,4 @@
 'use client';
-
 import {
   forwardRef,
   type ComponentPropsWithoutRef,
@@ -10,18 +9,16 @@ import { IconMap, type SocialIconName, type UiIconName } from '@/lib/iconMap';
 import { cn } from '@/utilities/cn';
 
 export type ButtonSize = 'sm' | 'md' | 'lg';
-export type ButtonVariant = 'primary' | 'secondary' | 'social';
+export type ButtonVariant = 'primary' | 'secondary' | 'social' | 'disabled';
 
 interface WithTextContent {
   children: React.ReactNode;
   'aria-label'?: string;
 }
-
 interface OnlyIconContent {
   children?: never;
   'aria-label': string;
 }
-
 type ButtonContentProps = WithTextContent | OnlyIconContent;
 
 interface BaseProps {
@@ -39,7 +36,6 @@ type ButtonAsLink = BaseProps &
     href: CustomLinkProps['href'];
     type?: never;
   };
-
 type ButtonAsButton = BaseProps &
   ButtonContentProps &
   Omit<
@@ -48,7 +44,6 @@ type ButtonAsButton = BaseProps &
   > & {
     href?: never;
   };
-
 export type ButtonProps = ButtonAsLink | ButtonAsButton;
 
 const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
@@ -67,6 +62,8 @@ const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
     'hover:border-foreground/25 hover:bg-foreground/10',
     'focus-visible:ring-primary',
   ),
+  disabled:
+    'border-transparent bg-foreground/10 text-foreground/40 pointer-events-none shadow-none active:scale-100',
 };
 
 const BUTTON_SIZES: Record<ButtonSize, { default: string; iconOnly: string }> =
@@ -88,9 +85,7 @@ const BUTTON_SIZES: Record<ButtonSize, { default: string; iconOnly: string }> =
 function resolveIcon(icon: SocialIconName | UiIconName): ReactNode {
   const IconComponent =
     IconMap.social[icon as SocialIconName] ?? IconMap.ui[icon as UiIconName];
-
   if (!IconComponent) return null;
-
   return <IconComponent className="size-4 shrink-0" aria-hidden="true" />;
 }
 
@@ -113,6 +108,11 @@ export const Button = forwardRef<
     'aria-label': ariaLabel,
   } = props;
 
+  const isActuallyDisabled =
+    variant === 'disabled' || ('disabled' in props && !!props.disabled);
+  const resolvedVariant: ButtonVariant = isActuallyDisabled
+    ? 'disabled'
+    : variant;
   const isIconOnly = !children && !!icon;
   const sizeClasses = BUTTON_SIZES[size];
 
@@ -120,7 +120,7 @@ export const Button = forwardRef<
     'inline-flex items-center justify-center font-medium',
     'transition-all duration-200 select-none active:scale-95',
     'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
-    BUTTON_VARIANTS[variant],
+    BUTTON_VARIANTS[resolvedVariant],
     isIconOnly ? sizeClasses.iconOnly : sizeClasses.default,
     fullWidth && 'w-full',
     className,
@@ -157,6 +157,8 @@ export const Button = forwardRef<
         href={href}
         className={finalClasses}
         aria-label={ariaLabel}
+        aria-disabled={isActuallyDisabled}
+        tabIndex={isActuallyDisabled ? -1 : undefined}
         {...linkRest}
       >
         {content}
@@ -173,6 +175,7 @@ export const Button = forwardRef<
     className: _className,
     children: _children,
     'aria-label': _ariaLabel,
+    disabled: _disabled,
     type = 'button',
     ...buttonRest
   } = props;
@@ -183,11 +186,12 @@ export const Button = forwardRef<
       type={type}
       className={finalClasses}
       aria-label={ariaLabel}
+      aria-disabled={isActuallyDisabled}
+      disabled={isActuallyDisabled}
       {...buttonRest}
     >
       {content}
     </button>
   );
 });
-
 Button.displayName = 'Button';
