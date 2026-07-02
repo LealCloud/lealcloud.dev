@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/Button';
+import ContactPhoneInput from '@/components/form/ContactPhoneInput'; // Asegura la ruta correcta
 import { getLocalizedMetadata } from '@/config/seo';
 import { cn } from '@/utilities/cn';
 import type { Metadata } from 'next';
@@ -30,7 +31,8 @@ export async function generateMetadata({
   });
 }
 
-export default async function Contact() {
+export default async function Contact({ params }: ContactPageProps) {
+  const { locale } = await params;
   const t = await getTranslations('pages.contact');
 
   return (
@@ -78,7 +80,6 @@ export default async function Contact() {
                   hello@lealcloud.dev
                 </Button>
               </li>
-
               <li>
                 <Button
                   variant="social"
@@ -92,7 +93,6 @@ export default async function Contact() {
                   GitHub
                 </Button>
               </li>
-
               <li>
                 <Button
                   variant="social"
@@ -118,7 +118,6 @@ export default async function Contact() {
                 {t('locationValue')}
               </dd>
             </div>
-
             <div className="flex flex-col gap-1">
               <dt className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
                 {t('availabilityTitle')}
@@ -144,7 +143,6 @@ export default async function Contact() {
             <span className="text-foreground text-sm font-medium">
               {t('form.labels.name')}
             </span>
-
             <input
               type="text"
               name="name"
@@ -159,7 +157,6 @@ export default async function Contact() {
             <span className="text-foreground text-sm font-medium">
               {t('form.labels.email')}
             </span>
-
             <input
               type="email"
               name="email"
@@ -170,11 +167,20 @@ export default async function Contact() {
             />
           </label>
 
+          {/* Renderizado del Client Component para el teléfono */}
+          <ContactPhoneInput
+            locale={locale}
+            labelContactNumber={t('form.labels.contactNumber')}
+            labelCountryCode={t('form.labels.countryCode')}
+            labelOptional={t('form.labels.optional')}
+            placeholderPhone={t('form.placeholders.phoneNumber')}
+            className={fieldControl}
+          />
+
           <label className="flex flex-col gap-2">
             <span className="text-foreground text-sm font-medium">
               {t('form.labels.subject')}
             </span>
-
             <input
               type="text"
               name="subject"
@@ -189,7 +195,6 @@ export default async function Contact() {
             <span className="text-foreground text-sm font-medium">
               {t('form.labels.message')}
             </span>
-
             <textarea
               name="message"
               rows={6}

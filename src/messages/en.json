@@ -169,11 +169,17 @@
         "labels": {
           "name": "Full Name",
           "email": "Email Address",
+          "contactNumber": "Contact Number",
+          "countryCode": "Country Code",
+          "phoneNumber": "Phone Number",
+          "optional": "Optional",
           "subject": "Subject",
           "message": "Message"
         },
         "placeholders": {
           "name": "e.g. John Smith",
+          "countryCode": "Select Country",
+          "phoneNumber": "e.g. 202 555 0143",
           "email": "john@example.com",
           "subject": "e.g. Job Opportunity",
           "message": "Tell me a little about your message or what you'd like to discuss..."

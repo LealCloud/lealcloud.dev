@@ -170,12 +170,18 @@
         "title": "Envíame un mensaje",
         "labels": {
           "name": "Nombre completo",
+          "contactNumber": "Número de contacto",
+          "countryCode": "Indicativo de país",
+          "phoneNumber": "Número de teléfono",
           "email": "Correo electrónico",
+          "optional": "Opcional",
           "subject": "Asunto",
           "message": "Mensaje"
         },
         "placeholders": {
           "name": "Ej. Juan Pérez",
+          "countryCode": "Selecciona país",
+          "phoneNumber": "Ej. 300 123 4567",
           "email": "juan@ejemplo.com",
           "subject": "Ej. Oportunidad laboral",
           "message": "Cuéntame en qué puedo ayudarte o qué tienes en mente..."
