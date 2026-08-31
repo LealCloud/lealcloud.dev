@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🌐 lealcloud.dev
+Bienvenido a lealcloud.dev, mi proyecto personal y profesional como desarrollador de software.
+Este sitio está construido con Next.js + TypeScript, siguiendo buenas prácticas de rendimiento, escalabilidad y diseño moderno.
 
-## Getting Started
+🚀 Objetivo
+Mostrar mi portafolio de proyectos.
 
-First, run the development server:
+Ofrecer servicios de desarrollo web moderno.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+Compartir recursos y cursos sobre tecnologías como React, Next.js, TypeScript y Node.js.
+
+Convertirse en un espacio de aprendizaje y colaboración para otros desarrolladores.
+
+🛠️ Tecnologías principales
+Next.js: framework para aplicaciones web rápidas y optimizadas.
+
+TypeScript: tipado fuerte para mayor seguridad y escalabilidad.
+
+TailwindCSS: estilos modernos y responsivos.
+
+Framer Motion: animaciones fluidas y atractivas.
+
+Vercel: despliegue rápido y confiable con integración continua.
+
+📂 Estructura del proyecto
+app/page.tsx: página principal con hero, carrusel de habilidades y servicios.
+
+app/portfolio: sección de proyectos destacados.
+
+app/courses: cursos y tutoriales disponibles.
+
+app/services: listado de servicios profesionales.
+
+app/contact: formulario de contacto y enlaces a redes.
+
+▶️ Desarrollo local
+bash
 pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# o
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+yarn dev
+Abre http://localhost:3000 para ver el resultado.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🌍 Deploy
+El proyecto está desplegado en Vercel, con integración continua desde GitHub.
 
-## Learn More
+📣 Próximos pasos
+Añadir más cursos y recursos educativos.
 
-To learn more about Next.js, take a look at the following resources:
+Publicar artículos en el blog sobre desarrollo web moderno.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Expandir la sección de servicios para clientes internacionales.
