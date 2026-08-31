@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 
@@ -22,9 +23,19 @@ export default function RootLayout(props: LayoutProps<'/'>) {
     <html
       lang="es"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col font-sans">
-        {props.children}
+        <ThemeProvider
+          storageKey="theme"
+          defaultTheme="system"
+          enableSystem={true}
+          enableColorScheme={true}
+          themes={['light', 'dark']}
+          attribute="data-theme"
+        >
+          {props.children}
+        </ThemeProvider>
       </body>
     </html>
   );
