@@ -1,22 +1,10 @@
 'use client';
+import { HEADER_LINKS, NavLink } from '@/config/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import {
-  HiBriefcase,
-  HiHome,
-  HiInformationCircle,
-  HiMail,
-} from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { TiThMenu } from 'react-icons/ti';
 import ThemeToggle from '../ui/ThemeToggle';
-
-const MENU_ITEMS = [
-  { label: 'Inicio', href: '#inicio', icon: HiHome },
-  { label: 'Sobre mí', href: '#sobre-mi', icon: HiInformationCircle },
-  { label: 'Proyectos', href: '#proyectos', icon: HiBriefcase },
-  { label: 'Contacto', href: '#contacto', icon: HiMail },
-];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +16,7 @@ export default function Header() {
         className="bg-surface flex min-h-16 min-w-full items-center justify-between px-6 py-3 shadow-sm"
       >
         {/* Logo */}
-        <a href="#inicio" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           <img
             src="/icon.svg"
             alt="Logo LealCloud"
@@ -40,14 +28,14 @@ export default function Header() {
         </a>
 
         {/* Nav horizontal - solo desktop */}
-        <ul className="hidden items-center gap-8 md:flex">
-          {MENU_ITEMS.map((item) => (
+        <ul className="hidden items-center gap-8 capitalize md:flex">
+          {HEADER_LINKS.map((item: NavLink) => (
             <li key={item.href}>
               <a
                 href={item.href}
                 className="text-foreground-muted hover:text-primary text-sm font-medium transition-colors"
               >
-                {item.label}
+                {item.labelKey}
               </a>
             </li>
           ))}
@@ -58,7 +46,7 @@ export default function Header() {
           <ThemeToggle size="sm" />
           <button
             onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? 'Cerrar menu' : 'Abrir menu'}
+            aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
             className="hover:bg-surface-hover focus-visible:outline-border-focus rounded-lg p-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 md:hidden"
@@ -68,6 +56,7 @@ export default function Header() {
         </div>
       </nav>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -94,27 +83,23 @@ export default function Header() {
                 <button
                   onClick={() => setIsOpen(false)}
                   className="hover:bg-surface-hover rounded-lg p-1.5 transition-colors"
-                  aria-label="Cerrar menu"
+                  aria-label="Cerrar menú"
                 >
                   <IoClose className="h-5 w-5" />
                 </button>
               </div>
-              <ul className="flex flex-col gap-1">
-                {MENU_ITEMS.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <li key={item.href}>
-                      <a
-                        href={item.href}
-                        onClick={() => setIsOpen(false)}
-                        className="hover:bg-surface-hover flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
-                      >
-                        <Icon className="h-5 w-5 opacity-70" />
-                        <span>{item.label}</span>
-                      </a>
-                    </li>
-                  );
-                })}
+              <ul className="flex flex-col gap-1 capitalize">
+                {HEADER_LINKS.map((item: NavLink) => (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="hover:bg-surface-hover flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
+                    >
+                      <span>{item.labelKey}</span>
+                    </a>
+                  </li>
+                ))}
               </ul>
             </motion.div>
           </>
