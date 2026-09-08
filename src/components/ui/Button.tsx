@@ -9,7 +9,8 @@ import {
 import { CustomLink, type CustomLinkProps } from './CustomLink';
 
 export type ButtonSize = 'sm' | 'md' | 'lg';
-export type ButtonVariant = 'primary' | 'secondary' | 'social' | 'disabled';
+export type ButtonVariant =
+  'primary' | 'secondary' | 'accent' | 'social' | 'disabled';
 
 interface WithTextContent {
   children: React.ReactNode;
@@ -48,22 +49,27 @@ export type ButtonProps = ButtonAsLink | ButtonAsButton;
 
 const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
   primary: cn(
-    'border border-transparent bg-accent text-white shadow-lg shadow-accent/25',
-    'hover:brightness-110 active:brightness-95',
-    'focus-visible:ring-accent',
-  ),
-  secondary: cn(
-    'border border-transparent bg-primary text-white shadow-lg shadow-primary/25',
-    'hover:brightness-110 active:brightness-95',
+    'border border-transparent bg-primary text-primary-foreground shadow-lg shadow-primary/25',
+    'hover:bg-primary-hover active:brightness-95',
     'focus-visible:ring-primary',
   ),
+  secondary: cn(
+    'border border-transparent bg-secondary text-secondary-foreground shadow-lg shadow-secondary/25',
+    'hover:bg-secondary-hover active:brightness-95',
+    'focus-visible:ring-secondary',
+  ),
+  accent: cn(
+    'border border-transparent bg-accent text-accent-foreground shadow-lg shadow-accent/25',
+    'hover:bg-accent-hover active:brightness-95',
+    'focus-visible:ring-accent',
+  ),
   social: cn(
-    'border border-foreground/10 bg-foreground/5 text-foreground',
-    'hover:border-foreground/25 hover:bg-foreground/10',
+    'border border-border bg-surface text-foreground',
+    'hover:bg-surface-hover hover:border-border-focus/40',
     'focus-visible:ring-primary',
   ),
   disabled:
-    'border-transparent bg-foreground/10 text-foreground/40 pointer-events-none shadow-none active:scale-100',
+    'border-transparent bg-disabled text-disabled-text pointer-events-none shadow-none active:scale-100',
 };
 
 const BUTTON_SIZES: Record<ButtonSize, { default: string; iconOnly: string }> =
