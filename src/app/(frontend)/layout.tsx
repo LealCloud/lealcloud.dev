@@ -19,6 +19,12 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'LealCloud | Portafolio',
   description: 'Sitio web personal y profesional de desarrollo de software.',
+  icons: {
+    icon: {
+      url: 'icon.svg',
+      type: 'image/svg+xml',
+    },
+  },
 };
 
 export default function RootLayout(props: LayoutProps<'/'>) {
