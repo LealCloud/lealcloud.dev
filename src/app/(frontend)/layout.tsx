@@ -3,6 +3,7 @@ import { ThemeProvider } from 'next-themes';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 
+import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
 const inter = Inter({
@@ -38,6 +39,7 @@ export default function RootLayout(props: LayoutProps<'/'>) {
         >
           <Header />
           {props.children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

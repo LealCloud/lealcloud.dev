@@ -10,9 +10,19 @@ export type InternalHref = (typeof INTERNAL_ROUTES)[number];
 export type ExternalHref = `http${string}`;
 export type AllowedHref = InternalHref | ExternalHref;
 
-export type InternalLabelKey = 'home' | 'projects' | 'lab' | 'blog' | 'contact';
-export type ExternalLabelKey = 'github' | 'linkedin';
-export type NavigationLabelKey = InternalLabelKey | ExternalLabelKey;
+export type NavigationLabelKey =
+  'home' | 'projects' | 'lab' | 'blog' | 'contact' | 'github' | 'linkedin';
+
+// Diccionario de textos hardcodeados
+export const NAVIGATION_LABELS: Record<NavigationLabelKey, string> = {
+  home: 'Inicio',
+  projects: 'Proyectos',
+  lab: 'Laboratorio',
+  blog: 'Blog',
+  contact: 'Contacto',
+  github: 'GitHub',
+  linkedin: 'LinkedIn',
+};
 
 interface BaseNavLink {
   labelKey: NavigationLabelKey;
@@ -45,6 +55,11 @@ export const NAVIGATION_MAP: NavLink[] = [
 export const HEADER_LINKS = NAVIGATION_MAP.filter((link) => !link.hideInHeader);
 
 export type MapHref = (typeof NAVIGATION_MAP)[number]['href'];
+
+// Helper para obtener el texto de un label
+export function getNavText(labelKey: NavigationLabelKey): string {
+  return NAVIGATION_LABELS[labelKey];
+}
 
 function isInternalLink(href: AllowedHref): href is InternalHref {
   return !href.startsWith('http');

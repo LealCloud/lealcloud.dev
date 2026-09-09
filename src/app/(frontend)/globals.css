@@ -60,7 +60,7 @@ html {
 
   /* FONDOS Y SUPERFICIES */
   --background: oklch(0.98 0.005 265);
-  --surface: oklch(0.90 0 0);
+  --surface: oklch(0.9 0 0);
   --surface-hover: oklch(0.95 0.008 265);
   --surface-active: oklch(0.92 0.01 265);
 
@@ -253,24 +253,6 @@ label:has(input[type='checkbox'], input[type='radio']) {
   gap: 0.5rem;
   font-weight: 400;
   cursor: pointer;
-}
-
-/* ENLACES */
-a {
-  color: var(--primary);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--primary-hover);
-  text-decoration: underline;
-}
-
-a:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 2px;
-  border-radius: 2px;
 }
 
 /* ====================================================
