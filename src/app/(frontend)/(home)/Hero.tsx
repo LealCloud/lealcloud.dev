@@ -41,9 +41,9 @@ export default function Hero() {
       />
 
       <motion.div
-        variants={reduceMotion ? undefined : container}
-        initial={reduceMotion ? undefined : 'hidden'}
-        animate={reduceMotion ? undefined : 'show'}
+        variants={container}
+        initial={false}
+        animate={reduceMotion ? 'show' : 'show'}
         className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-6 py-12 sm:px-8 sm:py-20 lg:py-28"
       >
         {/* Badge de disponibilidad */}
