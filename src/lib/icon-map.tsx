@@ -7,6 +7,9 @@ import {
 } from 'react-icons/ri';
 
 import {
+  FaAnglesLeft,
+  FaAnglesRight,
+  FaArrowRight,
   FaChessRook,
   FaCompassDrafting,
   FaPuzzlePiece,
@@ -16,6 +19,7 @@ import {
 import {
   SiGit,
   SiJavascript,
+  SiLabex,
   SiNextdotjs,
   SiNodedotjs,
   SiPostgresql,
@@ -37,6 +41,10 @@ export const IconMap = {
     solid: FaPuzzlePiece,
     growth: FaChessRook,
     bulb: RiLightbulbLine,
+    lab: SiLabex,
+    anglesLeft: FaAnglesLeft,
+    anglesRight: FaAnglesRight,
+    arrowright: FaArrowRight,
   },
   tech: {
     react: SiReact,
