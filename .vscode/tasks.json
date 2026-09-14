@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "Ejecutar pnpm dev al abrir",
+      "command": "pnpm dev",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

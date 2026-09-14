@@ -1,9 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef, useState } from 'react';
+import { BsFillMoonStarsFill } from 'react-icons/bs';
+import { FaSun } from 'react-icons/fa6';
 
 interface Particle {
   id: number;
@@ -185,11 +186,11 @@ export default function ThemeToggle({ size = 'md' }: ThemeToggleProps) {
 
         {/* Iconos de fondo */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-3">
-          <Sun
+          <FaSun
             size={currentSize.icon}
             className={isDark ? 'text-yellow-100' : 'text-amber-600'}
           />
-          <Moon
+          <BsFillMoonStarsFill
             size={currentSize.icon}
             className={isDark ? 'text-yellow-100' : 'text-slate-700'}
           />
@@ -271,9 +272,12 @@ export default function ThemeToggle({ size = 'md' }: ThemeToggleProps) {
           {/* Icono del thumb */}
           <div className="relative z-10">
             {isDark ? (
-              <Moon size={currentSize.icon - 2} className="text-yellow-200" />
+              <BsFillMoonStarsFill
+                size={currentSize.icon - 2}
+                className="text-yellow-200"
+              />
             ) : (
-              <Sun size={currentSize.icon - 2} className="text-amber-500" />
+              <FaSun size={currentSize.icon - 2} className="text-amber-500" />
             )}
           </div>
         </motion.div>

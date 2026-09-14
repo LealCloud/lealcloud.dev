@@ -87,7 +87,9 @@ export default function Hero() {
           className="flex flex-wrap items-center justify-center gap-4"
         >
           <Button variant="accent">Ver mis proyectos</Button>
-          <Button variant="primary">Hablemos</Button>
+          <Button variant="primary" href="/contact">
+            Hablemos
+          </Button>
         </motion.div>
       </motion.div>
 

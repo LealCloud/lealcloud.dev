@@ -1,4 +1,5 @@
 import {
+  RiAlertFill,
   RiCloseLine,
   RiLightbulbLine,
   RiMenuLine,
@@ -11,6 +12,7 @@ import {
   FaAnglesRight,
   FaArrowRight,
   FaChessRook,
+  FaCircleUser,
   FaCompassDrafting,
   FaPuzzlePiece,
   FaShieldCat,
@@ -28,7 +30,7 @@ import {
   SiTypescript,
 } from 'react-icons/si';
 
-import { BsEnvelopeArrowUpFill, BsGithub, BsLinkedin } from 'react-icons/bs';
+import { BsEnvelopeArrowUpFill, BsGithub, BsLinkedin, BsFillFileEarmarkTextFill } from 'react-icons/bs';
 
 export const IconMap = {
   ui: {
@@ -45,6 +47,9 @@ export const IconMap = {
     anglesLeft: FaAnglesLeft,
     anglesRight: FaAnglesRight,
     arrowright: FaArrowRight,
+    alert: RiAlertFill,
+    text: BsFillFileEarmarkTextFill,
+    user: FaCircleUser,
   },
   tech: {
     react: SiReact,
