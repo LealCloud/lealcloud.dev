@@ -6,7 +6,10 @@ export const INTERNAL_ROUTES = [
   '/contact',
 ] as const;
 
-export type InternalHref = (typeof INTERNAL_ROUTES)[number];
+type StaticInternalHref = (typeof INTERNAL_ROUTES)[number];
+type DynamicInternalHref = `/recursos/${string}`;
+
+export type InternalHref = StaticInternalHref | DynamicInternalHref;
 export type ExternalHref = `http${string}`;
 export type AllowedHref = InternalHref | ExternalHref;
 

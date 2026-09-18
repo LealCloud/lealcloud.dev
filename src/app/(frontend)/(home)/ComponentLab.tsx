@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { AppIcon } from '@/lib/icon-map';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useState } from 'react';
@@ -125,70 +126,17 @@ export default function ComponentLab() {
     component: (typeof COMPONENTS)[number],
     index: number,
     position: 'previous' | 'active' | 'next',
-  ) => {
-    const isActive = position === 'active';
-
-    return (
-      <motion.article
-        layout
-        className={
-          isActive
-            ? 'border-primary/45 bg-surface relative overflow-hidden rounded-3xl border shadow-[0_0_70px_color-mix(in_oklab,var(--primary)_10%,transparent)]'
-            : 'border-border bg-surface/70 relative overflow-hidden rounded-3xl border opacity-45'
-        }
-        animate={{
-          opacity: isActive ? 1 : 0.45,
-          scale: isActive ? 1 : 0.94,
-        }}
-        transition={
-          reduceMotion
-            ? { duration: 0 }
-            : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
-        }
-      >
-        <div className="border-border/70 relative aspect-16/7 overflow-hidden border-b bg-[radial-gradient(circle_at_50%_20%,color-mix(in_oklab,var(--primary)_14%,transparent),transparent_55%)]">
-          <div className="absolute inset-0 bg-[linear-gradient(color-mix(in_oklab,var(--foreground)_4%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_oklab,var(--foreground)_4%,transparent)_1px,transparent_1px)] bg-size-[28px_28px]" />
-
-          <div className="relative flex h-full items-center justify-center p-6 md:p-8">
-            {renderPreview(index)}
-          </div>
-        </div>
-
-        <div className="p-5 md:p-6">
-          <p className="text-primary mb-1.5 text-[10px] font-semibold tracking-[0.14em] uppercase">
-            {component.type}
-          </p>
-
-          <h3 className="text-xl md:text-2xl">{component.title}</h3>
-
-          <p className="text-foreground-muted mt-2 text-sm leading-relaxed">
-            {component.description}
-          </p>
-
-          <ul className="mt-4 flex flex-wrap gap-1.5">
-            {component.technologies.map((technology) => (
-              <li
-                key={technology}
-                className="border-border bg-background/50 text-foreground-subtle rounded-full border px-2.5 py-1 text-[10px] font-medium"
-              >
-                {technology}
-              </li>
-            ))}
-          </ul>
-
-          {isActive && (
-            <a
-              href={`/recursos/${component.title.toLowerCase().replaceAll(' ', '-')}`}
-              className="text-foreground hover:text-primary mt-5 inline-flex items-center gap-2 text-sm font-medium transition-colors"
-            >
-              Ver componente
-              <AppIcon category="ui" name="arrowright" className="text-sm" />
-            </a>
-          )}
-        </div>
-      </motion.article>
-    );
-  };
+  ) => (
+    <Card
+      media={renderPreview(index)}
+      category={component.type}
+      title={component.title}
+      description={component.description}
+      tags={component.technologies}
+      href={`/recursos/${component.title.toLowerCase().replaceAll(' ', '-')}`}
+      isActive={position === 'active'}
+    />
+  );
 
   return (
     <section
@@ -214,9 +162,8 @@ export default function ComponentLab() {
 
         {/* TODO: Crear y organizar contenido*/}
         <Button
-          href="/"
+          href="https://github.com/LealCloud"
           variant="accent"
-          iconPosition="right"
           className="rounded-full hover:-translate-y-0.5"
         >
           <AppIcon category="social" name="github" className="text-3xl" />
