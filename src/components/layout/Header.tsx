@@ -1,12 +1,15 @@
 'use client';
 import { HEADER_LINKS, NavLink } from '@/config/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { TiThMenu } from 'react-icons/ti';
 import ThemeToggle from '../ui/ThemeToggle';
 
 export default function Header() {
+  const pathname = usePathname();
+
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,16 +32,25 @@ export default function Header() {
 
         {/* Nav horizontal - solo desktop */}
         <ul className="hidden items-center gap-8 capitalize md:flex">
-          {HEADER_LINKS.map((item: NavLink) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                className="text-foreground-muted hover:text-primary text-sm font-medium transition-colors"
-              >
-                {item.labelKey}
-              </a>
-            </li>
-          ))}
+          {HEADER_LINKS.map((item: NavLink) => {
+            // 2. Comparamos si la ruta actual coincide con el enlace
+            const isActive = pathname === item.href;
+
+            return (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'text-primary font-semibold'
+                      : 'text-foreground-muted hover:text-primary'
+                  }`}
+                >
+                  {item.labelKey}{' '}
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Acciones */}
@@ -89,17 +101,24 @@ export default function Header() {
                 </button>
               </div>
               <ul className="flex flex-col gap-1 capitalize">
-                {HEADER_LINKS.map((item: NavLink) => (
-                  <li key={item.href}>
-                    <a
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="hover:bg-surface-hover flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
-                    >
-                      <span>{item.labelKey}</span>
-                    </a>
-                  </li>
-                ))}
+                {HEADER_LINKS.map((item: NavLink) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <li key={item.href}>
+                      <a
+                        href={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                          isActive
+                            ? 'bg-surface-hover text-primary font-semibold'
+                            : 'text-foreground-muted hover:bg-surface-hover'
+                        }`}
+                      >
+                        <span>{item.labelKey}</span>
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </motion.div>
           </>
