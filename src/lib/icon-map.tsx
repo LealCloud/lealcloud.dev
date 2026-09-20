@@ -1,3 +1,6 @@
+import type { ComponentProps } from 'react';
+import type { IconType } from 'react-icons';
+
 import {
   RiAlertFill,
   RiCloseLine,
@@ -30,7 +33,12 @@ import {
   SiTypescript,
 } from 'react-icons/si';
 
-import { BsEnvelopeArrowUpFill, BsGithub, BsLinkedin, BsFillFileEarmarkTextFill } from 'react-icons/bs';
+import {
+  BsEnvelopeArrowUpFill,
+  BsFillFileEarmarkTextFill,
+  BsGithub,
+  BsLinkedin,
+} from 'react-icons/bs';
 
 export const IconMap = {
   ui: {
@@ -79,29 +87,16 @@ export type IconName = UiIconName | TechIconName | SocialIconName;
    Helper para renderizar íconos dinámicamente
    ==================================================== */
 
-export function AppIcon({
-  category,
-  name,
-  ...props
-}: {
-  category: IconCategory;
-  name: IconName;
-} & React.ComponentProps<'svg'>) {
-  if (category === 'ui') {
-    const Icon = IconMap.ui[name as UiIconName];
-    return <Icon {...props} />;
-  }
+type AppIconProps = {
+  [C in IconCategory]: { category: C; name: keyof (typeof IconMap)[C] };
+}[IconCategory] &
+  Omit<ComponentProps<'svg'>, 'name'>;
 
-  if (category === 'social') {
-    const Icon = IconMap.social[name as SocialIconName];
-    return <Icon {...props} />;
-  }
+export function AppIcon({ category, name, ...props }: AppIconProps) {
+  const icons = IconMap[category] as Record<string, IconType>;
+  const Icon = icons[name];
+  if (!Icon) return null;
 
-  // Agrega este bloque que faltaba para 'tech'
-  if (category === 'tech') {
-    const Icon = IconMap.tech[name as TechIconName];
-    return <Icon {...props} />;
-  }
-
-  return null;
+  // Decorativo por defecto; se puede sobrescribir pasando aria-hidden o aria-label
+  return <Icon aria-hidden="true" {...props} />;
 }

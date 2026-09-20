@@ -19,6 +19,7 @@ interface WithTextContent {
 interface OnlyIconContent {
   children?: never;
   'aria-label': string;
+  icon: SocialIconName | UiIconName;
 }
 type ButtonContentProps = WithTextContent | OnlyIconContent;
 
@@ -69,7 +70,7 @@ const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
     'focus-visible:ring-primary',
   ),
   disabled:
-    'border-transparent bg-disabled text-disabled-text pointer-events-none shadow-none active:scale-100',
+    'border border-transparent bg-disabled text-disabled-text pointer-events-none shadow-none active:scale-100',
 };
 
 const BUTTON_SIZES: Record<ButtonSize, { default: string; iconOnly: string }> =
@@ -88,11 +89,25 @@ const BUTTON_SIZES: Record<ButtonSize, { default: string; iconOnly: string }> =
     },
   };
 
-function resolveIcon(icon: SocialIconName | UiIconName): ReactNode {
+const ICON_SIZES: Record<ButtonSize, string> = {
+  sm: 'size-3.5',
+  md: 'size-4',
+  lg: 'size-5',
+};
+
+function resolveIcon(
+  icon: SocialIconName | UiIconName,
+  size: ButtonSize,
+): ReactNode {
   const IconComponent =
     IconMap.social[icon as SocialIconName] ?? IconMap.ui[icon as UiIconName];
   if (!IconComponent) return null;
-  return <IconComponent className="size-4 shrink-0" aria-hidden="true" />;
+  return (
+    <IconComponent
+      className={cn(ICON_SIZES[size], 'shrink-0')}
+      aria-hidden="true"
+    />
+  );
 }
 
 function isLinkProps(props: ButtonProps): props is ButtonAsLink {
@@ -124,7 +139,9 @@ export const Button = forwardRef<
 
   const finalClasses = cn(
     'inline-flex items-center justify-center font-medium',
-    'transition-all duration-200 select-none active:scale-95',
+    'transition-[color,background-color,border-color,box-shadow,transform] duration-200 select-none active:scale-95',
+    'motion-reduce:transition-none motion-reduce:active:scale-100',
+    '[&>svg]:shrink-0',
     'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
     BUTTON_VARIANTS[resolvedVariant],
     isIconOnly ? sizeClasses.iconOnly : sizeClasses.default,
@@ -132,7 +149,7 @@ export const Button = forwardRef<
     className,
   );
 
-  const iconEl = icon ? resolveIcon(icon) : null;
+  const iconEl = icon ? resolveIcon(icon, size) : null;
   const content = isIconOnly ? (
     iconEl
   ) : (
@@ -154,18 +171,25 @@ export const Button = forwardRef<
       className: _className,
       children: _children,
       'aria-label': _ariaLabel,
+      onClick,
       ...linkRest
     } = props;
 
     return (
       <CustomLink
         ref={ref as React.Ref<HTMLAnchorElement>}
+        {...linkRest}
         href={href}
         className={finalClasses}
         aria-label={ariaLabel}
-        aria-disabled={isActuallyDisabled}
-        tabIndex={isActuallyDisabled ? -1 : undefined}
-        {...linkRest}
+        {...(isActuallyDisabled ? { 'aria-disabled': true, tabIndex: -1 } : {})}
+        onClick={(e) => {
+          if (isActuallyDisabled) {
+            e.preventDefault();
+            return;
+          }
+          onClick?.(e);
+        }}
       >
         {content}
       </CustomLink>
@@ -192,7 +216,6 @@ export const Button = forwardRef<
       type={type}
       className={finalClasses}
       aria-label={ariaLabel}
-      aria-disabled={isActuallyDisabled}
       disabled={isActuallyDisabled}
       {...buttonRest}
     >
