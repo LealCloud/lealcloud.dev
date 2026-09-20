@@ -10,7 +10,7 @@ import { CustomLink, type CustomLinkProps } from './CustomLink';
 
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonVariant =
-  'primary' | 'secondary' | 'accent' | 'social' | 'disabled';
+  'primary' | 'secondary' | 'accent' | 'social' | 'ghost' | 'disabled';
 
 interface WithTextContent {
   children: React.ReactNode;
@@ -67,6 +67,12 @@ const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
   social: cn(
     'border border-border bg-surface text-foreground',
     'hover:bg-surface-hover hover:border-border-focus/40',
+    'focus-visible:ring-primary',
+  ),
+  ghost: cn(
+    'border border-transparent bg-transparent text-foreground-muted',
+    'hover:bg-surface-hover hover:text-foreground',
+    'active:bg-surface-active',
     'focus-visible:ring-primary',
   ),
   disabled:
