@@ -8,11 +8,11 @@ import { useState } from 'react';
 
 const COMPONENTS = [
   {
-    title: 'Animated Button',
-    type: 'Componente',
+    title: 'Button System',
+    type: 'Componente UI',
     description:
-      'Botón reutilizable con estados de hover, loading y microinteracciones.',
-    technologies: ['React', 'TypeScript', 'Framer Motion', 'Tailwind CSS'],
+      'Botón reutilizable y tipado diseñado para mantener una interfaz consistente y flexible. Ofrece diferentes variantes, tamaños, iconos y anchos, adaptándose tanto a acciones como a enlaces. Incluye estados de interacción, transiciones sutiles y configuraciones accesibles para integrarse fácilmente en interfaces modernas.',
+    technologies: ['React', 'TypeScript', 'Tailwind CSS'],
   },
   {
     title: 'Glass Card',
@@ -74,9 +74,13 @@ export default function ComponentLab() {
     if (index === 0) {
       return (
         <div className="border-primary/25 bg-background/80 rounded-2xl border p-4 shadow-2xl backdrop-blur-xl">
-          <Button variant="accent" size="sm" iconPosition="right">
+          <Button
+            variant="accent"
+            size="lg"
+            icon="arrowright"
+            iconPosition="right"
+          >
             Probar interacción
-            <AppIcon category="ui" name="arrowright" className="text-sm" />
           </Button>
         </div>
       );
@@ -230,7 +234,7 @@ export default function ComponentLab() {
           aria-label="Navegación del carrusel"
         >
           {COMPONENTS.map((component, index) => (
-            <Button
+            <button
               key={component.title}
               type="button"
               aria-label={`Ir a ${component.title}`}
@@ -241,10 +245,9 @@ export default function ComponentLab() {
                   index > activeIndex ? 1 : index < activeIndex ? -1 : 0,
                 )
               }
-              variant="accent"
               className={
                 index === activeIndex
-                  ? 'size-2 rounded-full p-0 shadow-[0_0_10px_var(--accent)]'
+                  ? 'bg-accent size-2 rounded-full p-0 shadow-[0_0_10px_var(--accent)]'
                   : 'bg-border hover:bg-foreground-subtle size-1.5 rounded-full p-0 shadow-none'
               }
             />

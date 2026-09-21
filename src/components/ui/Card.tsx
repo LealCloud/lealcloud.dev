@@ -55,27 +55,27 @@ export function Card({
         </div>
       </div>
 
-      {/* Contenido: flex-col de altura fija, cada sección reserva su espacio */}
-      <div className="flex flex-1 flex-col p-5 md:p-6">
+      {/* Contenido: min-h-0 permite que se encoja al espacio restante del card */}
+      <div className="flex min-h-0 flex-1 flex-col p-5 md:p-6">
         <p className="text-primary mb-1.5 shrink-0 text-[10px] font-semibold tracking-[0.14em] uppercase">
           {category}
         </p>
 
         <h3 className="line-clamp-2 shrink-0 text-xl md:text-2xl">{title}</h3>
 
-        <p className="text-foreground-muted mt-2 max-h-16 flex-1 overflow-y-auto text-sm leading-relaxed">
+        {/* La descripción toma el espacio sobrante y hace scroll interno si es larga */}
+        <p className="text-foreground-muted mt-2 min-h-0 flex-1 overflow-y-auto text-sm leading-relaxed">
           {description}
         </p>
 
-        {/* Bloque final empujado abajo: un único mt-auto en el contenedor,
-            tags y link comparten espacio interno vía gap */}
-        <div className="mt-auto flex flex-col gap-3">
+        {/* Bloque final: shrink-0 evita que tags y botón se compriman o se oculten */}
+        <div className="mt-3 flex shrink-0 flex-col gap-3">
           {tags.length > 0 && (
             <ul className="flex max-h-8 shrink-0 flex-wrap gap-1.5 overflow-hidden">
               {tags.map((tag) => (
                 <li
                   key={tag}
-                  className="border-border bg-background/50 text-foreground-subtle rounded-full border px-2.5 py-1 text-[10px] font-medium"
+                  className="border-border bg-background/50 text-foreground-subtle rounded-full border px-2.5 py-1 text-xs font-medium"
                 >
                   {tag}
                 </li>
