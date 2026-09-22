@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { AppIcon } from '@/lib/icon-map';
+import { cn } from '@/utilities/cn';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useState } from 'react';
 
@@ -137,7 +138,7 @@ export default function ComponentLab() {
       title={component.title}
       description={component.description}
       tags={component.technologies}
-      href={`/recursos/${component.title.toLowerCase().replaceAll(' ', '-')}`}
+      href={`/resources/${component.title.toLowerCase().replaceAll(' ', '-')}`}
       isActive={position === 'active'}
     />
   );
@@ -168,11 +169,12 @@ export default function ComponentLab() {
         <Button
           href="https://github.com/LealCloud"
           variant="accent"
+          size="lg"
+          icon="github"
+          iconPosition="left"
           className="rounded-full hover:-translate-y-0.5"
         >
-          <AppIcon category="social" name="github" className="text-3xl" />
           Ver todos los recursos
-          <AppIcon category="ui" name="arrowright" className="text-sm" />
         </Button>
       </header>
 
@@ -182,10 +184,9 @@ export default function ComponentLab() {
           aria-label="Componente anterior"
           onClick={() => changeComponent(activeIndex - 1, -1)}
           variant="accent"
+          icon="anglesLeft"
           className="absolute top-1/2 -left-2 z-20 size-10 -translate-y-1/2 rounded-full p-0 sm:-left-3 md:-left-5 md:size-11"
-        >
-          <AppIcon category="ui" name="anglesLeft" className="text-2xl" />
-        </Button>
+        />
 
         <div className="mx-auto max-w-310">
           <div className="hidden grid-cols-[minmax(0,0.82fr)_minmax(0,1.15fr)_minmax(0,0.82fr)] items-center gap-5 lg:grid">
@@ -222,36 +223,42 @@ export default function ComponentLab() {
           aria-label="Siguiente componente"
           onClick={() => changeComponent(activeIndex + 1, 1)}
           variant="accent"
+          icon="anglesRight"
           className="absolute top-1/2 -right-2 z-20 size-10 -translate-y-1/2 rounded-full p-0 hover:scale-105 sm:-right-3 md:-right-5 md:size-11"
-        >
-          <AppIcon category="ui" name="anglesRight" className="text-2xl" />
-        </Button>
+        />
       </div>
 
       <footer className="text-foreground-subtle mt-6 flex items-center justify-center text-xs">
         <div
-          className="flex items-center gap-2"
+          role="tablist"
           aria-label="Navegación del carrusel"
+          className="flex items-center gap-2"
         >
-          {COMPONENTS.map((component, index) => (
-            <button
-              key={component.title}
-              type="button"
-              aria-label={`Ir a ${component.title}`}
-              aria-current={index === activeIndex ? 'true' : undefined}
-              onClick={() =>
-                changeComponent(
-                  index,
-                  index > activeIndex ? 1 : index < activeIndex ? -1 : 0,
-                )
-              }
-              className={
-                index === activeIndex
-                  ? 'bg-accent size-2 rounded-full p-0 shadow-[0_0_10px_var(--accent)]'
-                  : 'bg-border hover:bg-foreground-subtle size-1.5 rounded-full p-0 shadow-none'
-              }
-            />
-          ))}
+          {COMPONENTS.map((component, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <button
+                key={component.title}
+                type="button"
+                role="tab"
+                aria-label={`Ir a ${component.title}`}
+                aria-selected={isActive}
+                onClick={() =>
+                  changeComponent(
+                    index,
+                    index > activeIndex ? 1 : index < activeIndex ? -1 : 0,
+                  )
+                }
+                className={cn(
+                  'cursor-pointer rounded-full transition-all duration-200',
+                  'focus-visible:ring-accent focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                  isActive
+                    ? 'bg-accent size-2 shadow-[0_0_10px_var(--accent)]'
+                    : 'bg-border hover:bg-foreground-subtle size-1.5',
+                )}
+              />
+            );
+          })}
         </div>
       </footer>
     </section>
