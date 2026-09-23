@@ -138,7 +138,7 @@ export default function ComponentLab() {
       title={component.title}
       description={component.description}
       tags={component.technologies}
-      href={`/resources/${component.title.toLowerCase().replaceAll(' ', '-')}`}
+      href={`/lab/${component.title.toLowerCase().replaceAll(' ', '-')}`}
       isActive={position === 'active'}
     />
   );

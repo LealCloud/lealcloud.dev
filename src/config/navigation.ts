@@ -7,7 +7,7 @@ export const INTERNAL_ROUTES = [
 ] as const;
 
 type StaticInternalHref = (typeof INTERNAL_ROUTES)[number];
-type DynamicInternalHref = `/resources/${string}`;
+type DynamicInternalHref = `/lab/${string}`;
 
 export type InternalHref = StaticInternalHref | DynamicInternalHref;
 export type ExternalHref = `http${string}`;

@@ -16,6 +16,7 @@ import {
   FaArrowRight,
   FaChessRook,
   FaCircleUser,
+  FaCodeBranch,
   FaCompassDrafting,
   FaPuzzlePiece,
   FaShieldCat,
@@ -58,6 +59,7 @@ export const IconMap = {
     alert: RiAlertFill,
     text: BsFillFileEarmarkTextFill,
     user: FaCircleUser,
+    branch: FaCodeBranch,
   },
   tech: {
     react: SiReact,

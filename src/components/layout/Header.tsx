@@ -13,10 +13,10 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="relative">
+    <header className="sticky top-0 z-50">
       <nav
         aria-label="Navegación principal"
-        className="bg-surface flex min-h-16 min-w-full items-center justify-between px-6 py-3 shadow-sm"
+        className="bg-surface flex h-16 w-full items-center justify-between px-6 shadow-sm"
       >
         {/* Logo */}
         <a href="/" className="flex items-center gap-3">
