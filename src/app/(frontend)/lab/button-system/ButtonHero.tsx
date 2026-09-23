@@ -126,7 +126,7 @@ export default function ButtonHero() {
               variants={rise}
               className="flex flex-wrap items-baseline gap-3"
             >
-              <h1>Button</h1>
+              <h1 className='text-accent'>Button</h1>
               <span className="border-border bg-surface text-foreground-subtle rounded border px-2 py-0.5 font-mono text-xs tracking-wide uppercase">
                 Polimórfico
               </span>

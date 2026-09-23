@@ -1,10 +1,11 @@
 import ButtonHero from './ButtonHero';
+import ButtonPlayground from './Buttonplayground';
 
 export default function ButtonDocsPage() {
   return (
     <main>
       <ButtonHero />
-      {/* 02 — Área de pruebas interactiva */}
+      <ButtonPlayground />
       {/* 03 — Implementación generada */}
       {/* 04 — Entorno y dependencias */}
       {/* 05 — Anatomía */}
