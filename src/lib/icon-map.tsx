@@ -3,6 +3,7 @@ import type { IconType } from 'react-icons';
 
 import {
   RiAlertFill,
+  RiCheckboxCircleFill,
   RiCloseLine,
   RiLightbulbLine,
   RiMenuLine,
@@ -57,6 +58,7 @@ export const IconMap = {
     anglesRight: FaAnglesRight,
     arrowright: FaArrowRight,
     alert: RiAlertFill,
+    checkCircle: RiCheckboxCircleFill,
     text: BsFillFileEarmarkTextFill,
     user: FaCircleUser,
     branch: FaCodeBranch,
