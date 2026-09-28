@@ -1,6 +1,4 @@
-import { AppIcon } from '@/lib/icon-map';
 import { cn } from '@/utilities/cn';
-import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChangeEvent,
   cloneElement,
@@ -8,7 +6,12 @@ import {
   forwardRef,
   isValidElement,
   ReactNode,
+  type Ref,
 } from 'react';
+import { FieldError } from './FieldError';
+
+type FieldSize = 'sm' | 'md' | 'lg';
+type FieldVariant = 'default' | 'filled' | 'outlined';
 
 export interface InputFieldProps {
   label: string;
@@ -35,10 +38,52 @@ export interface InputFieldProps {
   disabled?: boolean;
   className?: string;
   containerClassName?: string;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'filled' | 'outlined';
+  size?: FieldSize;
+  variant?: FieldVariant;
   id?: string;
 }
+
+type FieldElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+
+/* ====================================================
+   Estilos (constantes: no se recrean en cada render)
+   ==================================================== */
+
+const SIZE_CLASSES: Record<FieldSize, { base: string; minH: string }> = {
+  sm: { base: 'text-xs px-2.5 gap-2', minH: 'min-h-9' },
+  md: { base: 'text-sm px-3.5 gap-3', minH: 'min-h-11' },
+  lg: { base: 'text-base px-4 gap-3.5', minH: 'min-h-12' },
+};
+
+const VARIANT_CLASSES: Record<FieldVariant, string> = {
+  default: cn(
+    'border-border bg-surface/60 text-foreground-muted',
+    'hover:border-primary/50 hover:bg-surface-hover hover:text-primary',
+    'focus-within:border-primary/70 focus-within:bg-surface-hover focus-within:text-primary',
+  ),
+  filled: cn(
+    'border-transparent bg-surface-hover text-foreground-muted',
+    'hover:bg-surface-active hover:text-primary',
+    'focus-within:bg-surface-active focus-within:text-primary focus-within:border-primary/70',
+  ),
+  outlined: cn(
+    'border-2 border-border bg-transparent text-foreground-muted',
+    'hover:border-primary/50 hover:text-primary',
+    'focus-within:border-primary focus-within:text-primary',
+  ),
+};
+
+const ICON_SIZES: Record<FieldSize, number> = { sm: 16, md: 18, lg: 20 };
+
+const SELECT_OPTION_CLASSES = cn(
+  'bg-surface text-foreground',
+  'hover:bg-primary/10',
+  'focus:bg-primary/20',
+);
+
+/* ====================================================
+   Sub-componentes de presentación
+   ==================================================== */
 
 interface IconProps {
   size?: number;
@@ -49,7 +94,47 @@ interface RightElementProps {
   className?: string;
 }
 
-type FieldElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+function FieldIcon({ icon, size }: { icon: ReactNode; size: FieldSize }) {
+  if (!icon) return null;
+
+  if (isValidElement<IconProps>(icon)) {
+    return (
+      <span className={cn('shrink-0', icon.props.className)}>
+        {cloneElement(icon, { size: ICON_SIZES[size] } as Partial<IconProps>)}
+      </span>
+    );
+  }
+
+  return <span className="shrink-0">{icon}</span>;
+}
+
+function FieldRightElement({ element }: { element: ReactNode }) {
+  if (!element) return null;
+
+  if (isValidElement<RightElementProps>(element)) {
+    const isCustomComponent =
+      typeof element.type === 'function' ||
+      (typeof element.type === 'object' && element.type !== null);
+
+    if (isCustomComponent) {
+      return cloneElement(element, {
+        className: cn(
+          'text-foreground-muted hover:text-primary',
+          'grid cursor-pointer place-items-center',
+          'border-0 bg-transparent p-1 transition-colors',
+          element.props.className,
+        ),
+      } as Partial<RightElementProps>);
+    }
+  }
+
+  return <span className="shrink-0">{element}</span>;
+}
+
+/* ====================================================
+   Componente principal
+   Responsable de: label + contenedor + control + error.
+   ==================================================== */
 
 export const InputField = forwardRef<FieldElement, InputFieldProps>(
   function InputField(
@@ -80,33 +165,8 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
     },
     ref,
   ) {
-    const sizeClasses = {
-      sm: { base: 'text-xs px-2.5 gap-2', minH: 'min-h-9' },
-      md: { base: 'text-sm px-3.5 gap-3', minH: 'min-h-11' },
-      lg: { base: 'text-base px-4 gap-3.5', minH: 'min-h-12' },
-    };
-
-    const variantClasses = {
-      default: cn(
-        'border-border bg-surface/60 text-foreground-muted',
-        'hover:border-primary/50 hover:bg-surface-hover hover:text-primary',
-        'focus-within:border-primary/70 focus-within:bg-surface-hover focus-within:text-primary',
-      ),
-      filled: cn(
-        'border-transparent bg-surface-hover text-foreground-muted',
-        'hover:bg-surface-active hover:text-primary',
-        'focus-within:bg-surface-active focus-within:text-primary focus-within:border-primary/70',
-      ),
-      outlined: cn(
-        'border-2 border-border bg-transparent text-foreground-muted',
-        'hover:border-primary/50 hover:text-primary',
-        'focus-within:border-primary focus-within:text-primary',
-      ),
-    };
-
-    const iconSizeMap = { sm: 16, md: 18, lg: 20 };
-
     const fieldId = id || name;
+    const errorId = fieldId ? `${fieldId}-error` : undefined;
 
     // Controlado si el padre pasa `value` explícitamente; si no (p. ej. con
     // register() de react-hook-form, que no incluye `value`), queda como
@@ -116,7 +176,7 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
       ? { value: value === null ? '' : String(value) }
       : { defaultValue };
 
-    const baseInputClasses = cn(
+    const controlClasses = cn(
       'text-foreground',
       'placeholder:text-foreground-subtle/60',
       'w-full min-w-0 border-0 bg-transparent p-0 m-0 outline-0',
@@ -124,72 +184,21 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
       className,
     );
 
-    const baseContainerClasses = cn(
+    const containerClasses = cn(
       'flex rounded-xl border shadow-sm',
       multiline ? 'items-start py-2.5' : 'items-center',
       'transition-all duration-200',
       'focus-within:-translate-y-0.5 focus-within:shadow-md',
       'hover:-translate-y-0.5',
-      sizeClasses[size].base,
-      !multiline && sizeClasses[size].minH,
-      variantClasses[variant],
+      SIZE_CLASSES[size].base,
+      !multiline && SIZE_CLASSES[size].minH,
+      VARIANT_CLASSES[variant],
       error &&
         'border-danger/50 focus-within:border-danger focus-within:shadow-danger/20',
       disabled &&
         'cursor-not-allowed border-border bg-disabled text-disabled-text opacity-100 hover:translate-y-0 hover:shadow-none',
       containerClassName,
     );
-
-    const renderIcon = (iconElement: ReactNode) => {
-      if (!iconElement) return null;
-
-      if (isValidElement<IconProps>(iconElement)) {
-        const existingProps = iconElement.props;
-        const iconSize = iconSizeMap[size];
-
-        return (
-          <span className={cn('shrink-0', existingProps.className)}>
-            {cloneElement(iconElement, {
-              size: iconSize,
-            } as Partial<IconProps>)}
-          </span>
-        );
-      }
-
-      return <span className="shrink-0">{iconElement}</span>;
-    };
-
-    const renderRightElement = (element: ReactNode) => {
-      if (!element) return null;
-
-      if (isValidElement<RightElementProps>(element)) {
-        const existingProps = element.props;
-        const isCustomComponent =
-          typeof element.type === 'function' ||
-          (typeof element.type === 'object' && element.type !== null);
-
-        if (isCustomComponent) {
-          return cloneElement(element, {
-            className: cn(
-              'text-foreground-muted hover:text-primary',
-              'grid cursor-pointer place-items-center',
-              'border-0 bg-transparent p-1 transition-colors',
-              existingProps.className,
-            ),
-          } as Partial<RightElementProps>);
-        }
-      }
-
-      return <span className="shrink-0">{element}</span>;
-    };
-
-    const selectOptionClasses = cn(
-      'bg-surface text-foreground',
-      'hover:bg-primary/10',
-      'focus:bg-primary/20',
-    );
-
-    const errorId = fieldId ? `${fieldId}-error` : undefined;
 
     const sharedFieldProps = {
       id: fieldId,
@@ -198,10 +207,11 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
       onBlur,
       placeholder,
       disabled,
-      className: baseInputClasses,
+      className: controlClasses,
       'aria-invalid': !!error,
       'aria-required': required,
-      'aria-describedby': errorId,
+      // Solo se referencia el error cuando existe en el DOM.
+      'aria-describedby': error ? errorId : undefined,
       ...controlledProps,
     };
 
@@ -219,12 +229,12 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
             {label}
             {required && <span className="text-danger ml-0.5">*</span>}
           </span>
-          <div className={baseContainerClasses}>
-            {icon && renderIcon(icon)}
+          <div className={containerClasses}>
+            <FieldIcon icon={icon} size={size} />
 
             {multiline ? (
               <textarea
-                ref={ref as React.Ref<HTMLTextAreaElement>}
+                ref={ref as Ref<HTMLTextAreaElement>}
                 rows={rows}
                 autoComplete={autoComplete}
                 required={required}
@@ -232,7 +242,7 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
               />
             ) : isSelect ? (
               <select
-                ref={ref as React.Ref<HTMLSelectElement>}
+                ref={ref as Ref<HTMLSelectElement>}
                 required={required}
                 {...sharedFieldProps}
               >
@@ -240,7 +250,7 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
                   <option
                     key={option.value}
                     value={option.value}
-                    className={selectOptionClasses}
+                    className={SELECT_OPTION_CLASSES}
                   >
                     {option.label}
                   </option>
@@ -248,7 +258,7 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
               </select>
             ) : (
               <input
-                ref={ref as React.Ref<HTMLInputElement>}
+                ref={ref as Ref<HTMLInputElement>}
                 type={type}
                 autoComplete={autoComplete}
                 required={required}
@@ -256,26 +266,11 @@ export const InputField = forwardRef<FieldElement, InputFieldProps>(
               />
             )}
 
-            {rightElement && renderRightElement(rightElement)}
+            <FieldRightElement element={rightElement} />
           </div>
         </label>
-        <AnimatePresence>
-          {error && errorId && (
-            <motion.p
-              key="error"
-              id={errorId}
-              role="alert"
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.15 }}
-              className="text-danger flex items-center gap-1 text-xs leading-relaxed"
-            >
-              <AppIcon category="ui" name="alert" className="text-2xl" />
-              {error}
-            </motion.p>
-          )}
-        </AnimatePresence>
+
+        <FieldError id={errorId} message={error} />
       </div>
     );
   },
