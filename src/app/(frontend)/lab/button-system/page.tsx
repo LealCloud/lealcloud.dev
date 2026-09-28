@@ -1,3 +1,4 @@
+import ButtonAnatomy from './ButtonAnatomy';
 import ButtonHero from './ButtonHero';
 import ButtonPlayground from './Buttonplayground';
 
@@ -6,7 +7,7 @@ export default function ButtonDocsPage() {
     <main>
       <ButtonHero />
       <ButtonPlayground />
-      {/* 03 — Implementación generada */}
+      <ButtonAnatomy />
       {/* 04 — Entorno y dependencias */}
       {/* 05 — Anatomía */}
       {/* 06 — Botón vs Enlace */}
